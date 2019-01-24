@@ -1,0 +1,27 @@
+<!--The content below is only a placeholder and can be replaced.-->
+<div style="text-align:center">
+  <h1 *ngIf="!matchServerOnline">
+    Warning: match server offline
+  </h1>
+  <h1>
+    Now playing
+  </h1>
+  <div>
+    <p *ngFor="let player of playingPlayers">{{player.nickname}}</p>
+    <p *ngIf="playingPlayers.length === 0">No players currently playing</p>
+  </div>
+  <h1>
+    Waiting room
+  </h1>
+  <div>
+    <p *ngFor="let player of waitingPlayers">{{player.nickname}}</p>
+    <p *ngIf="waitingPlayers.length === 0">No players currently waiting</p>
+  </div>
+  <h1>
+    Leaderboard
+  </h1>
+  <div>
+    <p *ngFor="let player of finishedPlayers">{{player.nickname}} ({{player.score}})</p>
+    <p *ngIf="finishedPlayers.length === 0">No players in the leaderboard yet</p>
+  </div>
+</div>
