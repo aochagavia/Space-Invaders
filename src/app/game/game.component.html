@@ -1,9 +1,12 @@
-<div *ngIf="player1">
+<div *ngIf="serverOnline && player1">
   <p>Now playing: {{player1.nickname}} vs {{player2.nickname}}</p>
   <input type="text" placeholder="{{player1.nickname}} score" [(ngModel)]="player1.score" />
   <input type="text" placeholder="{{player2.nickname}} score" [(ngModel)]="player2.score" />
   <button (click)="sendResults($event)">Send results to server</button>
 </div>
-<div *ngIf="!player1">
+<div *ngIf="serverOnline && !player1">
   Waiting for players
+</div>
+<div *ngIf="!serverOnline">
+  Connection lost, trying to reconnect
 </div>

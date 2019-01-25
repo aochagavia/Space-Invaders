@@ -1,5 +1,4 @@
-<!--The content below is only a placeholder and can be replaced.-->
-<div style="text-align:center">
+<div style="text-align:center" *ngIf="dashboardServerOnline">
   <h1 *ngIf="!matchServerOnline">
     Warning: match server offline
   </h1>
@@ -25,3 +24,4 @@
     <p *ngIf="finishedPlayers.length === 0">No players in the leaderboard yet</p>
   </div>
 </div>
+<div style="text-align:center" *ngIf="!dashboardServerOnline">Connection lost, trying to reconnect</div>

@@ -3,6 +3,7 @@ import { MatchService } from '../match.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Player } from 'server/src/player.model';
+import { SocketHealthService } from '../socket-health.service';
 
 @Component({
   selector: 'app-game',
@@ -14,7 +15,9 @@ export class GameComponent implements OnInit, OnDestroy {
   player1: Player;
   player2: Player;
 
-  constructor(private matchService: MatchService) { }
+  serverOnline = false;
+
+  constructor(private matchService: MatchService, private socketHealthService: SocketHealthService) { }
 
   ngOnInit() {
     this.matchService.matches().pipe(takeUntil(this.destroyed$)).subscribe(players => {
@@ -23,7 +26,14 @@ export class GameComponent implements OnInit, OnDestroy {
       this.player2 = players[1];
     });
 
-    this.matchService.registerMatchServer();
+    this.socketHealthService.connected().pipe(takeUntil(this.destroyed$)).subscribe(connected => {
+      if (connected) {
+        this.serverOnline = true;
+        this.matchService.registerMatchServer();
+      } else {
+        this.serverOnline = false;
+      }
+    });
   }
 
   ngOnDestroy() {
