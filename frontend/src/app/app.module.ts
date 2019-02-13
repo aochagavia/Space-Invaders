@@ -11,13 +11,7 @@ import { RegisterPlayerComponent } from './register-player/register-player.compo
 import { GameComponent } from './game/game.component';
 
 const config: SocketIoConfig = {
-  url: 'http://localhost:4444',
-  options: {
-    query: {
-      // TODO: get this key from the environment
-      apiKey: 'superSecureKeyNoOneWillEverGuess!',
-    }
-  }
+  url: 'http://localhost:4444'
 };
 
 @NgModule({

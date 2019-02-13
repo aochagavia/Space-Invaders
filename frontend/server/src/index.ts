@@ -12,13 +12,6 @@ const io = socketio(http);
 const state = new State();
 
 io.on('connection', socket => {
-    // TODO: get this key from the environment
-    if (socket.handshake.query.apiKey !== 'superSecureKeyNoOneWillEverGuess!') {
-        console.info('Attempt to connect with invalid API key', socket.handshake.query);
-        socket.disconnect(true);
-        return;
-    }
-
     socket.emit('dashboard', state.asDashboard());
 
     socket.on('registerMatchServer', () => {
@@ -33,8 +26,7 @@ io.on('connection', socket => {
             io.emit('dashboard', state.asDashboard());
         });
 
-        // We only accept matchFinished messages from this particular socket, which we trust
-        // because it has the right apiKey
+        // We only accept matchFinished messages from this particular socket
         socket.on('matchFinished', players => {
             // TODO: validate input?
             state.matchFinished(players);
@@ -69,7 +61,6 @@ const schema = Joi.object().keys({
     nickname: Joi.string().min(3).max(50).required(),
 });
 app.post('/new-player', (req, res) => {
-    // TODO: authorization
     schema.validate<{ nickname: string}>(req.body).then(player => {
         // TODO: reject duplicated nicknames?
         state.newPlayer(player.nickname);
