@@ -1,6 +1,7 @@
 import { Dashboard } from './dashboard.model';
 import { Socket } from 'socket.io';
 import { Player } from './player.model';
+import storage from 'node-persist';
 
 const LEADERBOARD_LENGTH = 20;
 const PLAYERS_PER_MATCH = 2;
@@ -17,6 +18,46 @@ export class State {
 
     get matchServerOnline(): boolean {
         return this.matchServerSocket !== undefined;
+    }
+
+    static async fromSnapshot(): Promise<State> {
+        const obj = await storage.getItem('state');
+        const state = new State();
+
+        if (obj) {
+            console.log('Loading from snapshot...');
+
+            state.nextPlayerId = obj.nextPlayerId;
+            state.waiting = obj.waiting;
+            state.playing = obj.playing;
+            state.finished = obj.finished;
+            state.leaderboard = obj.leaderboard;
+
+            console.log('Players waiting:', state.waiting.length);
+            console.log('Players playing:', state.playing.length);
+            console.log('Players finished:', state.finished.length);
+            console.log('Players in leaderboard:', state.leaderboard.length);
+        } else {
+            console.log('No snapshot information available');
+        }
+
+        return state;
+    }
+
+    async makeSnapshot() {
+        console.time('snapshot');
+
+        // We make a copy to avoid making a snapshot of the matchServerSocket
+        const copy = new State();
+        copy.nextPlayerId = this.nextPlayerId;
+        copy.waiting = this.waiting;
+        copy.playing = this.playing;
+        copy.finished = this.finished;
+        copy.leaderboard = this.leaderboard;
+
+        await storage.setItem('state', this);
+
+        console.timeEnd('snapshot');
     }
 
     registerMatchServer(socket: Socket) {
@@ -39,6 +80,7 @@ export class State {
         // If any players were playing, bring them back to the waiting list
         this.waiting = this.playing.concat(this.waiting);
         this.playing = [];
+        this.makeSnapshot();
 
         this.matchServerSocket = undefined;
     }
@@ -50,6 +92,7 @@ export class State {
     newMatch(): Player[] {
         this.playing = this.waiting.slice(0, PLAYERS_PER_MATCH);
         this.waiting = this.waiting.slice(PLAYERS_PER_MATCH);
+        this.makeSnapshot();
 
         return this.playing;
     }
@@ -59,6 +102,7 @@ export class State {
         this.nextPlayerId++;
 
         this.waiting.push({ id, nickname, score: 0 });
+        this.makeSnapshot();
     }
 
     matchFinished(players: Player[]) {
@@ -71,6 +115,7 @@ export class State {
             .slice(0, LEADERBOARD_LENGTH);
 
         this.finished = this.finished.concat(players);
+        this.makeSnapshot();
     }
 
     asDashboard(): Dashboard {

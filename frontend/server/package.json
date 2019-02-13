@@ -11,9 +11,13 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "@types/nedb": "^1.8.7",
+    "@types/node-persist": "0.0.33",
     "@types/socket.io": "^2.1.2",
     "body-parser": "^1.18.3",
     "express": "^4.16.4",
+    "nedb": "^1.8.0",
+    "node-persist": "^3.0.4",
     "socket.io": "^2.2.0"
   },
   "devDependencies": {
