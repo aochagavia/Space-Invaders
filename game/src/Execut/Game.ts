@@ -6,6 +6,9 @@ import {Controller} from "./Controller/Controller";
 import {Shields} from "./Entity/Shield/Shields";
 import {Ship} from "./Entity/Ship/Ship";
 import {AnimatedEntity} from "./Entity/AnimatedEntity";
+import {TextDisplay} from "./Text/TextDisplay";
+import {SimpleText} from "./Text/SimpleText";
+import {TextAlign} from "./Text/TextAlign";
 
 export class Game extends AnimatedEntity {
     private readonly options: Options;
@@ -14,6 +17,10 @@ export class Game extends AnimatedEntity {
     private shields: Shields;
     private bulletPool: BulletPool;
     private ship: Ship;
+
+    private text: TextDisplay;
+    private startTime: number = 0;
+    private timeText: SimpleText;
 
     private controller: Controller;
 
@@ -31,6 +38,7 @@ export class Game extends AnimatedEntity {
         // TODO: There is probably a better way of doing this
 
         this.alienField = new AlienField(this.options);
+        this.alienField.y = 160;
         this.alienField.on("fire", this.onAlienFire.bind(this));
         this.addChild(this.alienField);
 
@@ -44,8 +52,13 @@ export class Game extends AnimatedEntity {
         this.ship = new Ship(this.options);
         this.ship.y = 1080 - 50;
         this.ship.on("playerDeath",  this.onPlayerDeath.bind(this));
+        this.ship.on("dodge", this.onPlayerDodge.bind(this));
         this.addChild(this.ship);
 
+        this.text = new TextDisplay();
+        this.text.addText(this.options.playerName, 7, 0);
+        this.timeText = this.text.addText('', 480, 80, TextAlign.RIGHT);
+        this.addChild(this.text);
 
         this.controller = new Controller(
             this.options,
@@ -59,12 +72,17 @@ export class Game extends AnimatedEntity {
     }
 
     public start(): void {
-        this.alienField.start();
-        this.bulletPool.start();
-
         this.controller.start();
-
         super.start();
+
+        this.startTime = Date.now();
+
+        this.text.explode("Start!", 240, 540, -10, 2350);
+    }
+
+    public stop(): void {
+        this.controller.stop();
+        super.stop();
     }
 
     protected tick(elapsed: number): void {
@@ -72,9 +90,19 @@ export class Game extends AnimatedEntity {
         this.bulletPool.testHit(this.shields);
         this.bulletPool.testHit(this.ship);
 
+        this.updatePlayTime();
+
         if (this.alienField.getRemainingAliens().length == 0) {
             this.win();
         }
+    }
+
+    private updatePlayTime(): void {
+        let playTime = (Date.now() - this.startTime) / 1000;
+        let playMinutes = Math.floor(playTime / 60);
+        let playSeconds = Math.floor(playTime - (playMinutes * 60));
+        let playSecondsPrefix = playSeconds < 10 ? '0' : '';
+        this.timeText.update(`${playMinutes}:${playSecondsPrefix}${playSeconds}`);
     }
 
     private onPlayerFire(x: number, speed: number): void {
@@ -95,14 +123,21 @@ export class Game extends AnimatedEntity {
         this.lose();
     }
 
+    private onPlayerDodge(): void {
+        this.text.explode("dodge!", this.ship.x, this.ship.y + 25, 10, 150);
+    }
+
     private win(): void {
         console.log("Player wins!");
-        this.controller.gameOver()
+        this.controller.gameOver();
+        this.text.explode("You win!");
+        this.stop();
     }
 
     private lose(): void {
         console.log("Player loses :(");
-        this.controller.gameOver()
+        this.text.explode("You lose!");
+        this.controller.gameOver();
+        this.stop();
     }
-
 }

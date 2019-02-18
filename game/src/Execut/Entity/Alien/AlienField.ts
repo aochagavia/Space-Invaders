@@ -11,7 +11,7 @@ export class AlienField extends AnimatedEntity implements AliensInfoInterface {
     private readonly random = new Random("field");
     private lastFire: number;
 
-    private readonly fireInterval = 200;
+    private readonly fireInterval = 1500;
 
     constructor(options: Options) {
         super();

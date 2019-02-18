@@ -9,9 +9,27 @@
                 margin: 0;
                 overflow: hidden;
             }
+            @font-face {
+                font-family: "threed";
+                src: url("/fonts/3D-Thirteen-Pixel-Fonts.ttf");
+            }
         </style>
     </head>
     <body>
+        <div *ngIf="serverOnline && player1">
+            <div id="gameContainer"></div>
+        </div>
+
+        <!--
+        <div *ngIf="serverOnline && !player1">
+            Waiting for players
+        </div>
+        <div *ngIf="!serverOnline">
+            Connection lost, trying to reconnect
+        </div>
+        -->
+
         <script src="./pixi.js"></script>
+        <div style="font-family: 'threed'; height: 0;">&nbsp;<!-- force browser to load font --></div>
     </body>
 </html>

@@ -15,7 +15,14 @@ export abstract class AnimatedEntity extends Entity {
         this.started = true;
         this.children
             .filter(c => c instanceof AnimatedEntity)
-            .forEach(ae => (ae as AnimatedEntity).start())
+            .forEach(ae => (ae as AnimatedEntity).start());
+    }
+
+    public stop(): void {
+        this.started = false;
+        this.children
+            .filter(c => c instanceof AnimatedEntity)
+            .forEach(ae => (ae as AnimatedEntity).stop());
     }
 
     protected isStarted(): boolean {

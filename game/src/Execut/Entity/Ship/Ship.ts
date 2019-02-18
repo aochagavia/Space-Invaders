@@ -6,15 +6,20 @@ import {Explosion} from "../../Explosion";
 import {Entity} from "../Entity";
 import {AlienBullet} from "../Bullet/AlienBullet";
 import {Bullet} from "../Bullet/Bullet";
+import { Random } from "../../Random";
 
 export class Ship extends AnimatedEntity implements ShipInterface {
     private readonly options: Options;
     private readonly sprite: Sprite;
     private readonly explosion: Explosion;
 
+    private readonly random = new Random('ship');
+
     constructor(options: Options) {
         super();
         this.options = options;
+
+        this.x = 25;
 
         this.sprite = new Sprite(PIXI.loader.resources[`./images/0001.png`].texture);
         this.sprite.x = -25;
@@ -47,6 +52,13 @@ export class Ship extends AnimatedEntity implements ShipInterface {
         }
 
         if (!super.testHit(other)) {
+            return false;
+        }
+
+        (other as Bullet).recycle();
+
+        if (this.random.next() < this.options.shipDodgeChance) {
+            this.emit("dodge");
             return false;
         }
 

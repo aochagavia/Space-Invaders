@@ -17,7 +17,7 @@ module.exports = {
         // Add '.ts' and '.tsx' as resolvable extensions.
         extensions: [".ts", ".tsx", ".js", ".json"],
         alias: {
-            // "Test": path.resolve(__dirname, "src/Execut/Testje")
+            "gsap": path.resolve(__dirname, "node_modules/gsap")
         }
     },
 
@@ -57,8 +57,12 @@ module.exports = {
             },
             {
                 from: "./src/images",
-                to: "images"
-            }
+                to: "images",
+            },
+            {
+                from: "./src/fonts",
+                to: "fonts",
+            },
         ]),
     ]
 };

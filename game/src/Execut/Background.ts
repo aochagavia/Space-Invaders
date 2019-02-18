@@ -8,8 +8,11 @@ export class Background extends Graphics {
 
     constructor() {
         super();
-        this.on("added", this.onAdded);
-        this.on("removed", this.onRemoved);
+        // this.on("added", this.onAdded);
+        // this.on("removed", this.onRemoved);
+        this.beginFill(0x333333);
+        this.drawRect(0, 0, 480, 1080);
+
     }
 
     private onAdded(parent: DisplayObject): void {
