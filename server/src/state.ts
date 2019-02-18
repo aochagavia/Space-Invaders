@@ -60,6 +60,11 @@ export class State {
         console.timeEnd('snapshot');
     }
 
+    takenNicknames(): string[] {
+        const players = this.playing.concat(this.waiting).concat(this.finished);
+        return players.map(p => p.nickname);
+    }
+
     registerMatchServer(socket: Socket) {
         if (this.matchServerOnline) {
             // tslint:disable-next-line:no-console

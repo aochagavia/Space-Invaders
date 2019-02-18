@@ -60,10 +60,19 @@ async function initialize() {
     }
   }
 
+  app.get('/taken-nicknames', (req, res) => {
+    res.send(state.takenNicknames());
+  });
+
   app.post('/new-player', (req, res) => {
     const player = req.body as Player;
 
-    // TODO: reject duplicated nicknames?
+    // Ensure nickname is not already taken
+    if (state.takenNicknames().includes(player.nickname)) {
+      res.sendStatus(400);
+      return;
+    }
+
     state.newPlayer(player.nickname);
 
     // Trigger new match if possible
