@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MatchService } from '../match.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { Player } from 'server/src/player.model';
+import { Player } from 'shared/lib/player.model';
 import { SocketHealthService } from '../socket-health.service';
 
 @Component({

@@ -1,0 +1,17 @@
+{
+  "name": "shared",
+  "version": "1.0.0",
+  "description": "",
+  "module": "main.js",
+  "scripts": {
+    "build": "tsc"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "esm": "^3.2.5"
+  },
+  "devDependencies": {
+    "typescript": "^3.3.3"
+  }
+}

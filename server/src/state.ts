@@ -1,6 +1,6 @@
-import { Dashboard } from './dashboard.model';
+import { Dashboard } from 'shared/lib/dashboard.model';
+import { Player } from 'shared/lib/player.model';
 import { Socket } from 'socket.io';
-import { Player } from './player.model';
 import storage from 'node-persist';
 
 const LEADERBOARD_LENGTH = 20;

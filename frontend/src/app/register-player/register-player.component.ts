@@ -18,5 +18,4 @@ export class RegisterPlayerComponent implements OnInit {
     event.preventDefault();
     this.httpClient.post('http://localhost:4444/new-player', { nickname: this.nickname }).subscribe();
   }
-
 }

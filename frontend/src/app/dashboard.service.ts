@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Socket } from 'ngx-socket-io';
 import { Observable } from 'rxjs';
-import { Dashboard } from 'server/src/dashboard.model';
+import { Dashboard } from 'shared/lib/dashboard.model';
 
 @Injectable({
   providedIn: 'root'

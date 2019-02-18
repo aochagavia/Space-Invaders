@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Socket } from 'ngx-socket-io';
 import { Observable } from 'rxjs';
-import { Player } from 'server/src/player.model';
+import { Player } from 'shared/lib/player.model';
 
 @Injectable({
   providedIn: 'root'

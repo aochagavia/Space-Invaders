@@ -1,9 +1,9 @@
 import socketio from 'socket.io';
 import express from 'express';
 import bodyparser from 'body-parser';
-import Joi from 'joi';
 import { Server } from 'http';
 import { State } from './state';
+import { Player } from 'shared/lib/player.model';
 import storage from 'node-persist';
 
 async function initialize() {
@@ -32,7 +32,6 @@ async function initialize() {
 
       // We only accept matchFinished messages from this particular socket
       socket.on('matchFinished', players => {
-        // TODO: validate input?
         state.matchFinished(players);
 
         // There might be people in the waiting list
@@ -61,22 +60,17 @@ async function initialize() {
     }
   }
 
-  const schema = Joi.object().keys({
-    nickname: Joi.string().min(3).max(50).required(),
-  });
   app.post('/new-player', (req, res) => {
-    schema.validate<{ nickname: string }>(req.body).then(player => {
-      // TODO: reject duplicated nicknames?
-      state.newPlayer(player.nickname);
+    const player = req.body as Player;
 
-      // Trigger new match if possible
-      maybeStartMatch();
+    // TODO: reject duplicated nicknames?
+    state.newPlayer(player.nickname);
 
-      res.sendStatus(204);
-      io.emit('dashboard', state.asDashboard());
-    }).catch(() => {
-      res.sendStatus(400);
-    });
+    // Trigger new match if possible
+    maybeStartMatch();
+
+    res.sendStatus(204);
+    io.emit('dashboard', state.asDashboard());
   });
 
   http.listen(4444);
