@@ -4,6 +4,7 @@ import {SimpleText} from "./SimpleText";
 import {ExplodingText} from "./ExplodingText";
 import {TextAlign} from "./TextAlign";
 import {AlignedText} from "./AlignedText";
+import {FadingUpText} from "./FadeingUpText";
 
 export class TextDisplay extends Container {
 
@@ -23,8 +24,8 @@ export class TextDisplay extends Container {
 
     public addText(text: string, x: number, y: number, alignment: TextAlign = TextAlign.LEFT): SimpleText {
         let style = new PIXI.TextStyle({
-            fontFamily: "threed",
-            fontSize: 80,
+            fontFamily: "si",
+            fontSize: 20,
             fill: "white",
         });
 
@@ -38,24 +39,40 @@ export class TextDisplay extends Container {
     }
 
     // animate and random colours and other fun stuff!
-    public explode(text: string, x = 240, y = 540, rotation = 0, duration = 0): void {
+    public explode(text: string, x = 240, y = 540, duration = 1000): void {
         let style = new PIXI.TextStyle({
-            fontFamily: "threed",
+            fontFamily: "si",
             fontSize: 160,
             fill: "white",
         });
 
-        let explodingText = new ExplodingText(new PIXI.Text(text, style));
+        let explodingText = new ExplodingText(new PIXI.Text(text, style), duration);
         explodingText.x = x;
         explodingText.y = y;
 
         this.addChild(explodingText);
 
-        if (duration > 0) {
-            setTimeout(() => {
-                this.removeChild(explodingText);
-            }, duration);
-        }
+        setTimeout(() => {
+            this.removeChild(explodingText);
+        }, duration);
+    }
+
+    public fadeUp(text: string, x = 240, y = 540, duration = 1000): void {
+        let style = new PIXI.TextStyle({
+            fontFamily: "si",
+            fontSize: 80,
+            fill: "white",
+        });
+
+        let fadingUpText = new FadingUpText(new PIXI.Text(text, style), duration);
+        fadingUpText.x = x;
+        fadingUpText.y = y;
+
+        this.addChild(fadingUpText);
+
+        setTimeout(() => {
+            this.removeChild(fadingUpText);
+        }, duration);
     }
 
     private tick():void {

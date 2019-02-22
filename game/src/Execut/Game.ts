@@ -77,7 +77,7 @@ export class Game extends AnimatedEntity {
 
         this.startTime = Date.now();
 
-        this.text.explode("Start!", 240, 540, -10, 2350);
+        this.text.explode("Start!", 240, 540,2350);
     }
 
     public stop(): void {
@@ -124,7 +124,7 @@ export class Game extends AnimatedEntity {
     }
 
     private onPlayerDodge(): void {
-        this.text.explode("dodge!", this.ship.x, this.ship.y + 25, 10, 150);
+        this.text.explode("dodge!", this.ship.x, this.ship.y + 25, 250);
     }
 
     private win(): void {
