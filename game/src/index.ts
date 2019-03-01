@@ -4,7 +4,13 @@ import {Options} from "./Execut/Options";
 
 PIXI.loader
     .add([
-        "./images/alien.png",
+        "./images/alien01.png",
+        "./images/alien02.png",
+        "./images/alien03.png",
+        "./images/alien04.png",
+        "./images/alien05.png",
+        "./images/alien06.png",
+        "./images/alien07.png",
         "./images/bullet.png",
         "./images/alienbullet.png",
         "./images/explosion0.png",
@@ -12,7 +18,8 @@ PIXI.loader
         "./images/explosion2.png",
         "./images/explosion3.png",
         "./images/explosion4.png",
-        "./images/0001.png",
+        "./images/ship.png",
+        "./images/ship_shield.png",
     ]);
 
 let app = new Application(1920, 1080);
@@ -29,22 +36,25 @@ window["start"] = function(player1: Options, player2: Options, player3: Options,
             (g as Game).stop();
         });
 
-    app.stage.children
-        .forEach(c => app.stage.removeChild(c));
+    for (let i = app.stage.children.length - 1; i >= 0; i--) {
+        app.stage.removeChild(app.stage.children[i]);
+    }
 
     player1 = player1 || {
         playerName: 'Olle Bolle',
-        shipSpeed: 15,
-        shipBulletSpeed: 30,
-        shipFireInterval: 300,
+        shipSpeed: 20,//15,
+        shipBulletSpeed: 25,//30,
+        shipFireInterval: 800,
         shipDodgeChance: 0.3,
-    }
+        shieldThickness: 2,
+        shipShield: false,
+    };
 
     let games = [
         new Game(player1 || new Options()),
         new Game(player2 || new Options()),
-        // new Game(player3 || new Options()),
-        // new Game(player4 || new Options()),
+        new Game(player3 || new Options()),
+        new Game(player4 || new Options()),
     ];
 
     games.forEach((g, i) => {

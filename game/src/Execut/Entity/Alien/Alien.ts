@@ -3,6 +3,7 @@ import Sprite = PIXI.Sprite;
 import {Explosion} from "../../Explosion";
 import {Bullet} from "../Bullet/Bullet";
 import {PlayerBullet} from "../Bullet/PlayerBullet";
+import ColorMatrixFilter = PIXI.filters.ColorMatrixFilter;
 
 export class Alien extends Entity {
     private readonly sprite: Sprite;
@@ -10,16 +11,32 @@ export class Alien extends Entity {
 
     private isAlive = true;
 
-    constructor() {
+    private readonly sprites = [
+        './images/alien01.png',
+        './images/alien02.png',
+        './images/alien03.png',
+        './images/alien04.png',
+        './images/alien05.png',
+        './images/alien06.png',
+        './images/alien07.png',
+    ];
+
+    constructor(spriteId: number = 0, r: number = 1, g: number = 1, b: number = 1) {
         super();
-        this.sprite = new Sprite(PIXI.loader.resources["./images/alien.png"].texture);
-        this.sprite.x = 5;
-        this.sprite.y = 5;
+
+        let colorFilter = new ColorMatrixFilter();
+        colorFilter.matrix = [r, 0, 0, 0, 0, 0, g, 0, 0, 0, 0, 0, b, 0, 0, 0, 0, 0, 1, 0];
+
+        this.sprite = new Sprite(PIXI.loader.resources[this.sprites[spriteId]].texture);
+        this.sprite.x = 30 - this.sprite.width / 2;
+        this.sprite.y = 30 - this.sprite.height / 2;
+
+        this.sprite.filters = [colorFilter];
         this.addChild(this.sprite);
 
         this.explosion = new Explosion();
-        this.explosion.x = 5;
-        this.explosion.y = 5;
+        this.explosion.x = 7.5;
+        this.explosion.y = 7.5;
         this.addChild(this.explosion);
     }
 

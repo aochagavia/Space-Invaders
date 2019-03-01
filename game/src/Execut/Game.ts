@@ -9,6 +9,7 @@ import {AnimatedEntity} from "./Entity/AnimatedEntity";
 import {TextDisplay} from "./Text/TextDisplay";
 import {SimpleText} from "./Text/SimpleText";
 import {TextAlign} from "./Text/TextAlign";
+import Graphics = PIXI.Graphics;
 
 export class Game extends AnimatedEntity {
     private readonly options: Options;
@@ -43,21 +44,30 @@ export class Game extends AnimatedEntity {
         this.addChild(this.alienField);
 
         this.shields = new Shields(this.options);
-        this.shields.y = 800;
+        this.shields.y = 854 - this.options.shieldThickness * 5;
         this.addChild(this.shields);
 
         this.bulletPool = new BulletPool();
         this.addChild(this.bulletPool);
 
         this.ship = new Ship(this.options);
-        this.ship.y = 1080 - 50;
+        this.ship.y = 1000 - 30;
         this.ship.on("playerDeath",  this.onPlayerDeath.bind(this));
         this.ship.on("dodge", this.onPlayerDodge.bind(this));
+        this.ship.on("shield", this.onPlayerShield.bind(this));
         this.addChild(this.ship);
 
+        let line = new Graphics();
+        line.beginFill(0x66ff33);
+        line.drawRect(0, 0, 480, 4);
+        line.y = 1000;
+        this.addChild(line);
+
         this.text = new TextDisplay();
-        this.text.addText(this.options.playerName, 7, 0);
-        this.timeText = this.text.addText('', 480, 80, TextAlign.RIGHT);
+        this.text.addText(this.options.playerName, 28, 66.5, TextAlign.LEFT, 0xcc0000);
+        // this.text.addText('N1234567890123456789', 28, 66.5, TextAlign.LEFT, 0xcc0000);
+        this.text.addText("TIME", 322, 66.5, TextAlign.LEFT, 0xffffff);
+        this.timeText = this.text.addText('', 480 - 28, 66.5, TextAlign.RIGHT, 0x00ffff);
         this.addChild(this.text);
 
         this.controller = new Controller(
@@ -109,7 +119,7 @@ export class Game extends AnimatedEntity {
         let bullet = this.bulletPool.getPlayerBullet();
         bullet.setSpeed(-speed); // bullets from player go up
         bullet.x = x;
-        bullet.y = 1080 - 50;
+        bullet.y = this.ship.y - 20;
     }
 
     private onAlienFire(x: number, y: number): void {
@@ -125,6 +135,10 @@ export class Game extends AnimatedEntity {
 
     private onPlayerDodge(): void {
         this.text.explode("dodge!", this.ship.x, this.ship.y + 25, 250);
+    }
+
+    private onPlayerShield(): void {
+        this.text.explode("shield!", this.ship.x, this.ship.y + 25, 250);
     }
 
     private win(): void {

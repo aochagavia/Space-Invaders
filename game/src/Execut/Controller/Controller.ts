@@ -60,8 +60,8 @@ export class Controller extends EventEmitter {
 
         let pos = this.ship.getPosition() + move;
 
-        let minPos = 25;
-        let maxPos = 480 - 25;
+        let minPos = 30;
+        let maxPos = 480 - 30;
 
         if (pos > maxPos) {
             pos = maxPos - (pos - maxPos);

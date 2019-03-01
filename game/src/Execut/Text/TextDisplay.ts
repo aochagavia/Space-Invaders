@@ -8,6 +8,17 @@ import {FadingUpText} from "./FadeingUpText";
 
 export class TextDisplay extends Container {
 
+    private readonly colors = [
+        '#ff6633',
+        '#ff33cc',
+        '#00ffff',
+        '#cc0000',
+        '#9900ff',
+        '#ffffff',
+        '#ffff00',
+        '#66ff33',
+    ];
+
     constructor() {
         super();
         this.on("added", this.onAdded);
@@ -22,11 +33,17 @@ export class TextDisplay extends Container {
         PIXI.ticker.shared.remove(this.tick, this);
     }
 
-    public addText(text: string, x: number, y: number, alignment: TextAlign = TextAlign.LEFT): SimpleText {
+    public addText(text: string, x: number, y: number, alignment: TextAlign = TextAlign.LEFT, color: number = 0xffffff): SimpleText {
+        let colorStr = color.toString(16);
+        while (colorStr.length < 6) {
+            colorStr = '0' + colorStr;
+        }
+        colorStr = '#' + colorStr;
+
         let style = new PIXI.TextStyle({
             fontFamily: "si",
             fontSize: 20,
-            fill: "white",
+            fill: colorStr,
         });
 
         let alignedText = new AlignedText(new PIXI.Text(text, style), alignment);
@@ -42,8 +59,8 @@ export class TextDisplay extends Container {
     public explode(text: string, x = 240, y = 540, duration = 1000): void {
         let style = new PIXI.TextStyle({
             fontFamily: "si",
-            fontSize: 160,
-            fill: "white",
+            fontSize: 120,
+            fill: this.colors[Math.floor(Math.random() * this.colors.length)],
         });
 
         let explodingText = new ExplodingText(new PIXI.Text(text, style), duration);

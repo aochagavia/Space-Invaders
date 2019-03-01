@@ -1,6 +1,7 @@
 import {AnimatedEntity} from "../AnimatedEntity";
 import {Alien} from "./Alien";
 import {Entity} from "../Entity";
+import * as _ from "underscore";
 
 export class AlienRow extends AnimatedEntity {
     private readonly speed: number; // px per 100ms
@@ -8,13 +9,15 @@ export class AlienRow extends AnimatedEntity {
 
     private readonly aliens: Array<Alien> = [];
 
-    constructor(speed: number) {
+
+
+    constructor(row: number, alienType: number = 0, r: number = 1, g: number = 1, b: number = 1) {
         super();
 
-        this.speed = speed;
+        this.speed = 1 + row / 5;
 
         for (let i = 0; i < 7; i++) {
-            let alien = new Alien();
+            let alien = new Alien(alienType, r, g, b);
             alien.x = i * 60;
 
             alien.on("alienDeath", ((a: Alien) => {

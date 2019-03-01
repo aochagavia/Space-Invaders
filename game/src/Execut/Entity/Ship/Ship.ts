@@ -7,10 +7,12 @@ import {Entity} from "../Entity";
 import {AlienBullet} from "../Bullet/AlienBullet";
 import {Bullet} from "../Bullet/Bullet";
 import { Random } from "../../Random";
+import ColorMatrixFilter = PIXI.filters.ColorMatrixFilter;
 
 export class Ship extends AnimatedEntity implements ShipInterface {
     private readonly options: Options;
     private readonly sprite: Sprite;
+    private readonly shield: Sprite;
     private readonly explosion: Explosion;
 
     private readonly random = new Random('ship');
@@ -19,14 +21,25 @@ export class Ship extends AnimatedEntity implements ShipInterface {
         super();
         this.options = options;
 
-        this.x = 25;
+        this.x = 30;
 
-        this.sprite = new Sprite(PIXI.loader.resources[`./images/0001.png`].texture);
-        this.sprite.x = -25;
+        let colorFilter = new ColorMatrixFilter();
+        colorFilter.matrix = [1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0];
+        this.filters = [colorFilter];
+
+        this.sprite = new Sprite(PIXI.loader.resources[`./images/ship.png`].texture);
+        this.sprite.x = -this.sprite.width / 2;
         this.addChild(this.sprite);
 
+        this.shield = new Sprite(PIXI.loader.resources[`./images/ship_shield.png`].texture);
+        this.shield.x = -this.shield.width / 2;
+        this.shield.y = -10;
+        this.shield.visible = this.options.shipShield;
+        this.addChild(this.shield);
+
         this.explosion = new Explosion();
-        this.explosion.x = -25;
+        this.explosion.x = -22.5;
+        this.explosion.y = -10;
         this.addChild(this.explosion);
     }
 
@@ -35,7 +48,7 @@ export class Ship extends AnimatedEntity implements ShipInterface {
     }
 
     public moveToPosition(x: number): void {
-        this.x = Math.max(25, Math.min(480 - 25, x));
+        this.x = Math.max(30, Math.min(480 - 30, x));
     }
 
     public getPosition(): number {
@@ -57,10 +70,17 @@ export class Ship extends AnimatedEntity implements ShipInterface {
 
         (other as Bullet).recycle();
 
+        if (this.shield.visible) {
+            this.shield.visible = false;
+            this.emit("shield");
+            return false;
+        }
+
         if (this.random.next() < this.options.shipDodgeChance) {
             this.emit("dodge");
             return false;
         }
+
 
         this.sprite.visible = false;
         this.explosion.boom();
