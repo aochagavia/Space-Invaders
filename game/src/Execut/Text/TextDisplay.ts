@@ -5,6 +5,7 @@ import {ExplodingText} from "./ExplodingText";
 import {TextAlign} from "./TextAlign";
 import {AlignedText} from "./AlignedText";
 import {FadingUpText} from "./FadeingUpText";
+import {CenteredText} from "./CenteredText";
 
 export class TextDisplay extends Container {
 
@@ -53,6 +54,33 @@ export class TextDisplay extends Container {
         this.addChild(alignedText);
 
         return alignedText;
+    }
+
+    public addCenteredText(text: string, x = 240, y = 540, fontSize = 30, color: number = 0xffffff): CenteredText {
+        let colorStr = color.toString(16);
+        while (colorStr.length < 6) {
+            colorStr = '0' + colorStr;
+        }
+        colorStr = '#' + colorStr;
+
+        let style = new PIXI.TextStyle({
+            fontFamily: "si",
+            fontSize: fontSize,
+            fill: colorStr,
+            dropShadow: true, // hacked shadow in here; it's only used for player name at end of game
+            dropShadowColor: 'black',
+            dropShadowAlpha: 1,
+            dropShadowDistance: 0,
+            dropShadowBlur: 80,
+        });
+
+        let centeredText = new CenteredText(new PIXI.Text(text, style));
+        centeredText.x = x;
+        centeredText.y = y;
+
+        this.addChild(centeredText);
+
+        return centeredText;
     }
 
     // animate and random colours and other fun stuff!

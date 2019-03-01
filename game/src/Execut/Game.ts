@@ -22,12 +22,20 @@ export class Game extends AnimatedEntity {
     private bulletPool: BulletPool;
     private ship: Ship;
 
-    private text: TextDisplay;
     private startTime: number = 0;
+    private kills: number = 0;
+
+    private text: TextDisplay;
+
+    private nameText: SimpleText;
+    private timeLabelText: SimpleText;
     private timeText: SimpleText;
 
-    private kills: number = 0;
+    private killsLabelText: SimpleText;
     private killsText: SimpleText;
+
+    private line: Graphics;
+    private skull: Sprite;
 
     private controller: Controller;
 
@@ -69,26 +77,29 @@ export class Game extends AnimatedEntity {
         this.ship.on("shield", this.onPlayerShield.bind(this));
         this.addChild(this.ship);
 
-        let line = new Graphics();
-        line.beginFill(0x66ff33);
-        line.drawRect(0, 0, 480, 4);
-        line.y = 1000;
-        this.addChild(line);
+        this.line = new Graphics();
+        this.line.beginFill(0x66ff33);
+        this.line.drawRect(0, 0, 480, 4);
+        this.line.y = 1000;
+        this.addChild(this.line);
 
-        let skull = new Sprite(PIXI.loader.resources[`./images/alienskull.png`].texture);
-        skull.x = 240 - skull.width / 2;
-        skull.y = 1040 - skull.height / 2;
-        this.addChild(skull);
+        this.skull = new Sprite(PIXI.loader.resources[`./images/alienskull.png`].texture);
+        this.skull.x = 240 - this.skull.width / 2;
+        this.skull.y = 1040 - this.skull.height / 2;
+        this.addChild(this.skull);
 
         this.text = new TextDisplay();
         this.addChild(this.text);
 
-        this.text.addText(this.options.playerName, 28, 66.5, TextAlign.LEFT, 0xcc0000);
-        // this.text.addText('N1234567890123456789', 28, 66.5, TextAlign.LEFT, 0xcc0000);
+        let name = this.options.playerName;
+        if (name.length >= 23) {
+            name = name.substr(0, 21) + '...';
+        }
+        this.nameText = this.text.addText(name, 28, 66.5, TextAlign.LEFT, 0xcc0000);
 
-        this.text.addText("TIME", 322, 66.5, TextAlign.LEFT, 0xffffff);
+        this.timeLabelText = this.text.addText("TIME", 322, 66.5, TextAlign.LEFT, 0xffffff);
         this.timeText = this.text.addText('', 480 - 28, 66.5, TextAlign.RIGHT, 0x00ffff);
-        this.text.addText('KILLS:', 28, 1031, TextAlign.LEFT, 0xff6633);
+        this.killsLabelText = this.text.addText('KILLS:', 28, 1031, TextAlign.LEFT, 0xff6633);
         this.killsText = this.text.addText('0x0', 480-28, 1031, TextAlign.RIGHT, 0xff6633);
 
         this.controller = new Controller(
@@ -189,10 +200,19 @@ export class Game extends AnimatedEntity {
 
     private showEndState(won: boolean): void {
         const fadeOutTime = 500 / 1000;
-        TweenLite.to(this.bulletPool, fadeOutTime, {pixi: {alpha: 0}});
-        TweenLite.to(this.alienField, fadeOutTime, {pixi: {alpha: 0}});
-        TweenLite.to(this.ship, fadeOutTime, {pixi: {alpha: 0}});
-        TweenLite.to(this.shields, fadeOutTime, {pixi: {alpha: 0}});
+        TweenLite.to([
+            this.alienField,
+            this.shields,
+            this.bulletPool,
+            this.ship,
+            this.nameText,
+            this.timeLabelText,
+            this.timeText,
+            this.line,
+            this.killsLabelText,
+            this.killsText,
+            this.skull,
+        ], fadeOutTime, {pixi: {alpha: 0}});
 
         const playTime = (Date.now() - this.startTime) / 1000;
 
@@ -204,19 +224,34 @@ export class Game extends AnimatedEntity {
 
         setTimeout(() => {
             if (won) {
-                this.text.addText('YOU WON!', 240, 540 - textSpacing - textSize, TextAlign.CENTER, 0x66ff33, textSize);
+                this.text.addText('YOU WON!', 240, 540 - textSize / 2 - textSpacing - textSize, TextAlign.CENTER, 0x66ff33, textSize);
             } else {
-                this.text.addText('YOU LOST!', 240, 540 - textSpacing - textSize, TextAlign.CENTER, 0xcc0000, textSize);
+                this.text.addText('YOU LOST!', 240, 540 - textSize / 2 - textSpacing - textSize, TextAlign.CENTER, 0xcc0000, textSize);
             }
         }, start);
 
         setTimeout(() => {
-            this.text.addText(Game.formatTime(playTime), 240, 540, TextAlign.CENTER, 0x00ffff, textSize);
+            this.text.addText(Game.formatTime(playTime), 240, 540 - textSize / 2, TextAlign.CENTER, 0x00ffff, textSize);
         }, start + pause);
 
         setTimeout(() => {
-            this.text.addText(`KILLS: 0x${this.kills.toString(16)}`, 240, 540 + textSize + textSpacing, TextAlign.CENTER, 0xff6633, textSize);
-        }, start + pause + pause);
+            this.text.addText(`KILLS: 0x${this.kills.toString(16)}`, 240, 540 + textSize / 2 + textSpacing, TextAlign.CENTER, 0xff6633, textSize);
+        }, start + pause * 2);
+
+        setTimeout(() => {
+            const t = this.text.addCenteredText(this.options.playerName, 240, 540, 30, 0xffffff);
+            t.rotation = -30 * Math.PI / 180;
+
+            const minAngle = 0.3;
+            const maxAngle = 1.1525719972156676; // Math.atan(1080 / 480)
+            let a = minAngle;
+            const w = t.width + 40;
+            if (w > 480) {
+                a = Math.max(minAngle, Math.min(maxAngle, Math.acos(480 / w)))
+            }
+            t.rotation = -a;
+
+        }, start + pause * 3)
 
     }
 }
