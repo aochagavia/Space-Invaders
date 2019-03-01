@@ -12,7 +12,7 @@ import ColorMatrixFilter = PIXI.filters.ColorMatrixFilter;
 export class Ship extends AnimatedEntity implements ShipInterface {
     private readonly options: Options;
     private readonly sprite: Sprite;
-    private readonly shield: Sprite;
+    private readonly shields: Array<Sprite> = [];
     private readonly explosion: Explosion;
 
     private readonly random = new Random('ship');
@@ -31,11 +31,13 @@ export class Ship extends AnimatedEntity implements ShipInterface {
         this.sprite.x = -this.sprite.width / 2;
         this.addChild(this.sprite);
 
-        this.shield = new Sprite(PIXI.loader.resources[`./images/ship_shield.png`].texture);
-        this.shield.x = -this.shield.width / 2;
-        this.shield.y = -10;
-        this.shield.visible = this.options.shipShield;
-        this.addChild(this.shield);
+        for (let i = 0; i < options.shipShields; i++) {
+            let shield = new Sprite(PIXI.loader.resources[`./images/ship_shield.png`].texture);
+            shield.x = -shield.width / 2;
+            shield.y = -10 - (i * 5);
+            this.addChild(shield);
+            this.shields.push(shield);
+        }
 
         this.explosion = new Explosion();
         this.explosion.x = -22.5;
@@ -55,6 +57,14 @@ export class Ship extends AnimatedEntity implements ShipInterface {
         return this.x;
     }
 
+    private useShield(): boolean {
+        if (this.shields.length <= 0) {
+            return false;
+        }
+        this.removeChild(this.shields.pop() as Sprite);
+        return true;
+    }
+
     public testHit(other: Entity): boolean {
         if (!(other instanceof AlienBullet)) {
             return false;
@@ -70,8 +80,7 @@ export class Ship extends AnimatedEntity implements ShipInterface {
 
         (other as Bullet).recycle();
 
-        if (this.shield.visible) {
-            this.shield.visible = false;
+        if (this.useShield()) {
             this.emit("shield");
             return false;
         }

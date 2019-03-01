@@ -46,7 +46,7 @@ window["start"] = function(player1: Options, player2: Options, player3: Options,
         shipBulletSpeed: 25,//30,
         shipFireInterval: 800,
         shipDodgeChance: 0.3,
-        shipShield: false,
+        shipShields: 2,
         shieldThickness: 2,
         shieldWidth: 4,
     };

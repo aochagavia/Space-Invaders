@@ -7,7 +7,7 @@ export class Options {
     public readonly shipBulletSpeed: number = 25;
     public readonly shipFireInterval: number = 800;
     public readonly shipDodgeChance: number = 0.3;
-    public readonly shipShield: boolean = false;
+    public readonly shipShields: number = 0;
 
     public readonly shieldThickness: number = 0;
     public readonly shieldWidth: number = 4;
