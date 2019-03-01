@@ -33,7 +33,7 @@ export class TextDisplay extends Container {
         PIXI.ticker.shared.remove(this.tick, this);
     }
 
-    public addText(text: string, x: number, y: number, alignment: TextAlign = TextAlign.LEFT, color: number = 0xffffff): SimpleText {
+    public addText(text: string, x: number, y: number, alignment: TextAlign = TextAlign.LEFT, color: number = 0xffffff, fontsize: number = 20): SimpleText {
         let colorStr = color.toString(16);
         while (colorStr.length < 6) {
             colorStr = '0' + colorStr;
@@ -42,7 +42,7 @@ export class TextDisplay extends Container {
 
         let style = new PIXI.TextStyle({
             fontFamily: "si",
-            fontSize: 20,
+            fontSize: fontsize,
             fill: colorStr,
         });
 
@@ -56,10 +56,10 @@ export class TextDisplay extends Container {
     }
 
     // animate and random colours and other fun stuff!
-    public explode(text: string, x = 240, y = 540, duration = 1000): void {
+    public explode(text: string, x = 240, y = 540, duration = 1000, fontSize = 80): void {
         let style = new PIXI.TextStyle({
             fontFamily: "si",
-            fontSize: 120,
+            fontSize: fontSize,
             fill: this.colors[Math.floor(Math.random() * this.colors.length)],
         });
 
@@ -77,8 +77,8 @@ export class TextDisplay extends Container {
     public fadeUp(text: string, x = 240, y = 540, duration = 1000): void {
         let style = new PIXI.TextStyle({
             fontFamily: "si",
-            fontSize: 80,
-            fill: "white",
+            fontSize: 40,
+            fill: this.colors[Math.floor(Math.random() * this.colors.length)],
         });
 
         let fadingUpText = new FadingUpText(new PIXI.Text(text, style), duration);

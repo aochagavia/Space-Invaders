@@ -9,6 +9,8 @@ import {AnimatedEntity} from "./Entity/AnimatedEntity";
 import {TextDisplay} from "./Text/TextDisplay";
 import {SimpleText} from "./Text/SimpleText";
 import {TextAlign} from "./Text/TextAlign";
+// @ts-ignore IJ cannot find file but it's there
+import {TweenLite} from "gsap/all";
 import Graphics = PIXI.Graphics;
 import Sprite = PIXI.Sprite;
 
@@ -86,8 +88,8 @@ export class Game extends AnimatedEntity {
 
         this.text.addText("TIME", 322, 66.5, TextAlign.LEFT, 0xffffff);
         this.timeText = this.text.addText('', 480 - 28, 66.5, TextAlign.RIGHT, 0x00ffff);
-        this.text.addText('KILLS:', 28, 1031, TextAlign.LEFT, 0x00ffff);
-        this.killsText = this.text.addText('0x0', 480-28, 1031, TextAlign.RIGHT, 0x00ffff);
+        this.text.addText('KILLS:', 28, 1031, TextAlign.LEFT, 0xff6633);
+        this.killsText = this.text.addText('0x0', 480-28, 1031, TextAlign.RIGHT, 0xff6633);
 
         this.controller = new Controller(
             this.options,
@@ -106,7 +108,7 @@ export class Game extends AnimatedEntity {
 
         this.startTime = Date.now();
 
-        this.text.explode("Start!", 240, 540,2350);
+        this.text.explode("Start!", 240, 540,2350, 120);
     }
 
     public stop(): void {
@@ -128,10 +130,14 @@ export class Game extends AnimatedEntity {
 
     private updatePlayTime(): void {
         let playTime = (Date.now() - this.startTime) / 1000;
-        let playMinutes = Math.floor(playTime / 60);
-        let playSeconds = Math.floor(playTime - (playMinutes * 60));
+        this.timeText.update(Game.formatTime(playTime));
+    }
+
+    private static formatTime(seconds: number): string {
+        let playMinutes = Math.floor(seconds / 60);
+        let playSeconds = Math.floor(seconds - (playMinutes * 60));
         let playSecondsPrefix = playSeconds < 10 ? '0' : '';
-        this.timeText.update(`${playMinutes}:${playSecondsPrefix}${playSeconds}`);
+        return `${playMinutes}:${playSecondsPrefix}${playSeconds}`;
     }
 
     private onPlayerFire(x: number, speed: number): void {
@@ -158,11 +164,11 @@ export class Game extends AnimatedEntity {
     }
 
     private onPlayerDodge(): void {
-        this.text.explode("dodge!", this.ship.x, this.ship.y + 25, 250);
+        this.text.fadeUp("dodge!", this.ship.x, this.ship.y + 25, 600);
     }
 
     private onPlayerShield(): void {
-        this.text.explode("shield!", this.ship.x, this.ship.y + 25, 250);
+        this.text.fadeUp("shield!", this.ship.x, this.ship.y + 25, 600);
     }
 
     private win(): void {
@@ -170,6 +176,7 @@ export class Game extends AnimatedEntity {
         this.controller.gameOver();
         this.text.explode("You win!");
         this.stop();
+        this.showEndState(true);
     }
 
     private lose(): void {
@@ -177,5 +184,39 @@ export class Game extends AnimatedEntity {
         this.text.explode("You lose!");
         this.controller.gameOver();
         this.stop();
+        this.showEndState(false);
+    }
+
+    private showEndState(won: boolean): void {
+        const fadeOutTime = 500 / 1000;
+        TweenLite.to(this.bulletPool, fadeOutTime, {pixi: {alpha: 0}});
+        TweenLite.to(this.alienField, fadeOutTime, {pixi: {alpha: 0}});
+        TweenLite.to(this.ship, fadeOutTime, {pixi: {alpha: 0}});
+        TweenLite.to(this.shields, fadeOutTime, {pixi: {alpha: 0}});
+
+        const playTime = (Date.now() - this.startTime) / 1000;
+
+        const textSize = 60;
+        const textSpacing = 15;
+
+        const start = 900;
+        const pause = 600;
+
+        setTimeout(() => {
+            if (won) {
+                this.text.addText('YOU WON!', 240, 540 - textSpacing - textSize, TextAlign.CENTER, 0x66ff33, textSize);
+            } else {
+                this.text.addText('YOU LOST!', 240, 540 - textSpacing - textSize, TextAlign.CENTER, 0xcc0000, textSize);
+            }
+        }, start);
+
+        setTimeout(() => {
+            this.text.addText(Game.formatTime(playTime), 240, 540, TextAlign.CENTER, 0x00ffff, textSize);
+        }, start + pause);
+
+        setTimeout(() => {
+            this.text.addText(`KILLS: 0x${this.kills.toString(16)}`, 240, 540 + textSize + textSpacing, TextAlign.CENTER, 0xff6633, textSize);
+        }, start + pause + pause);
+
     }
 }

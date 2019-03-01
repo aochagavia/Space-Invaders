@@ -7,6 +7,9 @@ import {TweenLite} from "gsap/all";
 export class FadingUpText extends CenteredText {
     constructor(pixiText: PIXI.Text, duration: number = 1000) {
         super(pixiText);
-        TweenLite.to(this, duration / 1000, {pixi: {alpha: 0}, y: this.y - 30});
+        setTimeout(() => {
+            TweenLite.to(this, duration / 1000, {pixi: {y: this.y - parseFloat(pixiText.style.fontSize as string) / 3}});
+            TweenLite.to(this, duration / 1500, {pixi: {alpha: 0}, delay: duration / 3000});
+        }, 0);
     }
 }
