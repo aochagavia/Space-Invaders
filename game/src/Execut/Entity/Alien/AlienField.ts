@@ -12,7 +12,7 @@ export class AlienField extends AnimatedEntity implements AliensInfoInterface {
     private readonly random = new Random("field");
     private lastFire: number;
 
-    private readonly fireInterval = 1500;
+    private readonly options: Options;
 
     private readonly alienColors = [
         0xff6633,
@@ -29,6 +29,8 @@ export class AlienField extends AnimatedEntity implements AliensInfoInterface {
 
     constructor(options: Options) {
         super();
+
+        this.options = options;
 
         let alienTypes = _.shuffle(this.alienTypes) as number[];
         let alienColors = _.shuffle(this.alienColors) as number[];
@@ -71,8 +73,9 @@ export class AlienField extends AnimatedEntity implements AliensInfoInterface {
     }
 
     protected tick(elapsed: number): void {
+        this.y += elapsed / 100 * this.options.alienMoveDown;
+
         if (this.timeForANewBullet()) {
-            this.y ++; // experimental: move slowly down
             this.fire();
         }
     }
@@ -84,8 +87,8 @@ export class AlienField extends AnimatedEntity implements AliensInfoInterface {
 
         let elapsed = Date.now() - this.lastFire;
 
-        if (elapsed >= this.fireInterval) {
-            this.lastFire = Date.now() - (elapsed - this.fireInterval);
+        if (elapsed >= this.options.alienFireInterval) {
+            this.lastFire = Date.now() - (elapsed - this.options.alienFireInterval);
             return true;
         }
 

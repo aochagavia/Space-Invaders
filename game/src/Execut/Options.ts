@@ -11,4 +11,7 @@ export class Options {
 
     public readonly shieldThickness: number = 0;
     public readonly shieldWidth: number = 4;
+
+    public readonly alienFireInterval: number = 3000;
+    public readonly alienMoveDown: number = 0.1;
 }

@@ -49,6 +49,8 @@ window["start"] = function(player1: Options, player2: Options, player3: Options,
         shipShields: 2,
         shieldThickness: 2,
         shieldWidth: 4,
+        alienMoveDown: 1,
+        alienFireInterval: 2000,
     };
 
     let games = [
