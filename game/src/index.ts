@@ -41,12 +41,51 @@ window["start"] = function(player1: Options, player2: Options, player3: Options,
     }
 
     player1 = player1 || {
-        playerName: 'Olle Bolle',
-        shipSpeed: 20,//15,
-        shipBulletSpeed: 25,//30,
+        playerName: 'Speedy',
+        shipSpeed: 30,
+        shipBulletSpeed: 25,
         shipFireInterval: 800,
         shipDodgeChance: 0.3,
-        shipShields: 2,
+        shipShields: 1,
+        shieldThickness: 2,
+        shieldWidth: 4,
+        alienMoveDown: 1,
+        alienFireInterval: 2000,
+    };
+
+    player2 = player2 || {
+        playerName: 'Shooty',
+        shipSpeed: 20,
+        shipBulletSpeed: 25,
+        shipFireInterval: 600,
+        shipDodgeChance: 0.3,
+        shipShields: 1,
+        shieldThickness: 2,
+        shieldWidth: 4,
+        alienMoveDown: 1,
+        alienFireInterval: 2000,
+    };
+
+    player3 = player3 || {
+        playerName: 'Rockety',
+        shipSpeed: 20,
+        shipBulletSpeed: 40,
+        shipFireInterval: 800,
+        shipDodgeChance: 0.3,
+        shipShields: 1,
+        shieldThickness: 2,
+        shieldWidth: 4,
+        alienMoveDown: 1,
+        alienFireInterval: 2000,
+    };
+
+    player4 = player4 || {
+        playerName: 'Dodgy',
+        shipSpeed: 20,
+        shipBulletSpeed: 25,
+        shipFireInterval: 800,
+        shipDodgeChance: 0.5,
+        shipShields: 1,
         shieldThickness: 2,
         shieldWidth: 4,
         alienMoveDown: 1,
