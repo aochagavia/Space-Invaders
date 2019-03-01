@@ -10,6 +10,7 @@ import {TextDisplay} from "./Text/TextDisplay";
 import {SimpleText} from "./Text/SimpleText";
 import {TextAlign} from "./Text/TextAlign";
 import Graphics = PIXI.Graphics;
+import Sprite = PIXI.Sprite;
 
 export class Game extends AnimatedEntity {
     private readonly options: Options;
@@ -23,11 +24,19 @@ export class Game extends AnimatedEntity {
     private startTime: number = 0;
     private timeText: SimpleText;
 
+    private kills: number = 0;
+    private killsText: SimpleText;
+
     private controller: Controller;
 
     constructor(options: Options) {
         super();
         this.options = options;
+
+        // fixme: mask here and on bullets makes bullets disappear?
+        // this.mask = new Graphics();
+        // this.mask.drawRect(0, 0, 480, 1080);
+        // this.addChild(this.mask);
 
         this.addChild(new Background());
     }
@@ -41,6 +50,7 @@ export class Game extends AnimatedEntity {
         this.alienField = new AlienField(this.options);
         this.alienField.y = 160;
         this.alienField.on("fire", this.onAlienFire.bind(this));
+        this.alienField.on("alienDeath", this.onAlienDeath.bind(this));
         this.addChild(this.alienField);
 
         this.shields = new Shields(this.options);
@@ -63,12 +73,21 @@ export class Game extends AnimatedEntity {
         line.y = 1000;
         this.addChild(line);
 
+        let skull = new Sprite(PIXI.loader.resources[`./images/alienskull.png`].texture);
+        skull.x = 240 - skull.width / 2;
+        skull.y = 1040 - skull.height / 2;
+        this.addChild(skull);
+
         this.text = new TextDisplay();
+        this.addChild(this.text);
+
         this.text.addText(this.options.playerName, 28, 66.5, TextAlign.LEFT, 0xcc0000);
         // this.text.addText('N1234567890123456789', 28, 66.5, TextAlign.LEFT, 0xcc0000);
+
         this.text.addText("TIME", 322, 66.5, TextAlign.LEFT, 0xffffff);
         this.timeText = this.text.addText('', 480 - 28, 66.5, TextAlign.RIGHT, 0x00ffff);
-        this.addChild(this.text);
+        this.text.addText('KILLS:', 28, 1031, TextAlign.LEFT, 0x00ffff);
+        this.killsText = this.text.addText('0x0', 480-28, 1031, TextAlign.RIGHT, 0x00ffff);
 
         this.controller = new Controller(
             this.options,
@@ -131,6 +150,11 @@ export class Game extends AnimatedEntity {
 
     private onPlayerDeath(): void {
         this.lose();
+    }
+
+    private onAlienDeath(): void {
+        this.kills++;
+        this.killsText.update(`0x${this.kills.toString(16)}`);
     }
 
     private onPlayerDodge(): void {

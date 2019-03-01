@@ -5,9 +5,18 @@ import {PlayerBullet} from "./PlayerBullet";
 import {AlienBullet} from "./AlienBullet";
 import {Util} from "../../Util";
 import {BulletsInfoInterface} from "../../Controller/BulletsInfoInterface";
+import Graphics = PIXI.Graphics;
 
 export class BulletPool extends AnimatedEntity implements BulletsInfoInterface {
     private readonly bullets: Array<Bullet> = [];
+
+    public constructor() {
+        super();
+
+        this.mask = new Graphics();
+        this.mask.drawRect(0, 0, 480, 1000);
+        this.addChild(this.mask);
+    }
 
     public testHit(other: Entity): boolean {
         // Be recycle the target implementation of testHit, because here we loop through our bullets,

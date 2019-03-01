@@ -11,6 +11,7 @@ PIXI.loader
         "./images/alien05.png",
         "./images/alien06.png",
         "./images/alien07.png",
+        "./images/alienskull.png",
         "./images/bullet.png",
         "./images/alienbullet.png",
         "./images/explosion0.png",
