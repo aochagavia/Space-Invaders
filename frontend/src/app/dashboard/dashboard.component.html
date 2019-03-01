@@ -1,27 +1,75 @@
-<div style="text-align:center" *ngIf="dashboardServerOnline">
-  <h1 *ngIf="!matchServerOnline">
-    Warning: match server offline
-  </h1>
-  <h1>
-    Now playing
-  </h1>
-  <div>
-    <p *ngFor="let player of playingPlayers">{{player.nickname}}</p>
-    <p *ngIf="playingPlayers.length === 0">No players currently playing</p>
+<div class="w-full p-4" *ngIf="!dashboardServerOnline">
+  <p class="bg-red-light text-red-darkest p-4">
+      Connection lost, trying to reconnect
+  </p>
+</div>
+<div class="w-full p-4" *ngIf="dashboardServerOnline && !matchServerOnline">
+  <p class="bg-red-light text-red-darkest p-4">
+      Warning: Match Server Offline
+  </p>
+</div>
+<div class="max-w-5xl mx-auto flex mt-12 p-8" *ngIf="dashboardServerOnline">
+  <div class="w-1/2">
+    <h1 class="mb-8 text-center">
+      High Scores
+    </h1>
+    <div class="text-lg">
+      <div *ngFor="let player of finishedPlayers; index as i">
+        <div class="mb-4 flex" *ngIf="i === 0">
+          <div class="w-1/2">
+            <span class="inline-block bg-yellow-dark border-4 border-yellow-darker text-yellow-darkest p-4 text-2xl mb-4"
+              style="transform: rotate(-5deg)">
+              <span>1.</span>
+              {{ player.nickname }}
+            </span>
+          </div>
+          <div class="w-1/2 flex">
+            <div class="w-1/4 flex items-center">
+              {{ player.score }}
+            </div>
+            <div class="w-3/4 text-grey flex items-center">
+              Winner Takes All
+            </div>
+          </div>
+        </div>
+        <div class="mb-4 flex text-xl" *ngIf="i > 0">
+          <div class="w-1/2">
+            <span>{{ i+1 }}.</span>
+            {{ player.nickname }}
+          </div>
+          <div class="w-1/2 flex">
+            <div class="w-1/4">
+              {{ player.score }}
+            </div>
+            <div class="w-3/4 text-grey">
+              Almost There
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
-  <h1>
-    Waiting room
-  </h1>
-  <div>
-    <p *ngFor="let player of waitingPlayers">{{player.nickname}}</p>
-    <p *ngIf="waitingPlayers.length === 0">No players currently waiting</p>
-  </div>
-  <h1>
-    Leaderboard
-  </h1>
-  <div>
-    <p *ngFor="let player of finishedPlayers">{{player.nickname}} ({{player.score}})</p>
-    <p *ngIf="finishedPlayers.length === 0">No players in the leaderboard yet</p>
+  <div class="w-1/2">
+    <h2 class="text-2xl mb-6 text-center">
+      Waiting List
+    </h2>
+    <div class="text-center text-grey-dark" *ngIf="playingPlayers.length === 0 && waitingPlayers.length === 0">
+      The Galaxy Is Dark And Full Of Terrors
+    </div>
+    <div class="border-4 border-grey bg-grey-darkest text-center text-lg mb-8 w-1/2 mx-auto" *ngIf="playingPlayers.length > 0">
+      <div class="bg-grey text-black p-4">
+        Now Playing
+      </div>
+      <div class="px-4 pt-4">
+        <div class="mb-4" *ngFor="let player of playingPlayers">
+          {{ player.nickname }}
+        </div>
+      </div>
+    </div>
+    <div class="w-1/2 mx-auto text-center">
+      <div class="mb-3" *ngFor="let player of waitingPlayers">
+        {{ player.nickname }}
+      </div>
+    </div>
   </div>
 </div>
-<div style="text-align:center" *ngIf="!dashboardServerOnline">Connection lost, trying to reconnect</div>
