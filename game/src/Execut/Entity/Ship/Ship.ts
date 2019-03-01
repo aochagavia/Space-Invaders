@@ -80,16 +80,15 @@ export class Ship extends AnimatedEntity implements ShipInterface {
 
         (other as Bullet).recycle();
 
-        if (this.useShield()) {
-            this.emit("shield");
-            return false;
-        }
-
         if (this.random.next() < this.options.shipDodgeChance) {
             this.emit("dodge");
             return false;
         }
 
+        if (this.useShield()) {
+            this.emit("shield");
+            return false;
+        }
 
         this.sprite.visible = false;
         this.explosion.boom();
