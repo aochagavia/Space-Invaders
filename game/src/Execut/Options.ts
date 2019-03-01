@@ -9,5 +9,6 @@ export class Options {
     public readonly shipDodgeChance: number = 0.3;
     public readonly shipShield: boolean = false;
 
-    public readonly shieldThickness: number = 2;
+    public readonly shieldThickness: number = 0;
+    public readonly shieldWidth: number = 4;
 }

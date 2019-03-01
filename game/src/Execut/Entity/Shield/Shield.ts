@@ -9,25 +9,28 @@ import {PlayerBullet} from "../Bullet/PlayerBullet";
 
 export class Shield extends Entity {
     private _isAlive = true;
+    private readonly options: Options;
 
     private readonly blocks: Graphics[] = [];
 
     constructor(options: Options) {
         super();
 
+        this.options = options;
+
         let i = 0;
-        for (let j = 2; j < 10-2; j++) {
+        for (let j = 2; j < 6 + options.shieldWidth-2; j++) {
             this.addBlock(i, j);
         }
 
         i = 1;
-        for (let j = 1; j < 10 - 1; j++) {
+        for (let j = 1; j < 6 + options.shieldWidth - 1; j++) {
             this.addBlock(i, j);
         }
 
         let end = 2 + options.shieldThickness;
         for (i = 2; i < end; i++) {
-            for (let j = 0; j < 10; j++) {
+            for (let j = 0; j < 6 + options.shieldWidth; j++) {
                 this.addBlock(i, j);
             }
         }
@@ -36,7 +39,7 @@ export class Shield extends Entity {
         for (i; i < end; i++) {
             for (let j = 0; j < 3; j++) {
                 this.addBlock(i, j);
-                this.addBlock(i, j + 7);
+                this.addBlock(i, j + 3 + options.shieldWidth);
             }
         }
 
@@ -44,7 +47,7 @@ export class Shield extends Entity {
         for (i; i < end; i++) {
             for (let j = 0; j < 2; j++) {
                 this.addBlock(i, j);
-                this.addBlock(i, j + 8);
+                this.addBlock(i, j + 4 + options.shieldWidth);
             }
         }
 
@@ -54,7 +57,7 @@ export class Shield extends Entity {
         let block = new Graphics();
         block.beginFill(0x66ff33);
         block.drawRect(0, 0, 4, 4);
-        block.x = 35 + j * 5;
+        block.x = 45 - (this.options.shieldWidth * 2.5) + j * 5;
         block.y = i * 5;
         this.addChild(block);
         this.blocks.push(block);
