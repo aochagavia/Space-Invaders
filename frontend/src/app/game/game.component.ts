@@ -52,6 +52,7 @@ export class GameComponent implements OnInit, OnDestroy, AfterViewInit {
     pixi.addEventListener('load', (evt) => {
       this.addScript('./assets/game/bundle.js');
     });
+    window["sendMatchResult"] = this.matchService.sendMatchResult.bind(this.matchService);
   }
 
   private addScript(src: string): Element {

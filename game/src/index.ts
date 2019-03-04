@@ -108,6 +108,7 @@ window["start"] = function(player1: Options, player2: Options, player3: Options,
     games.forEach((g, i) => {
         g.x = i * 480;
         app.stage.addChild(g);
+        g.on("end", registerGameResult)
     });
 
     PIXI.loader

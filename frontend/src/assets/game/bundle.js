@@ -15637,6 +15637,12 @@ class Game extends _Entity_AnimatedEntity__WEBPACK_IMPORTED_MODULE_6__["Animated
         this.text.explode("You win!");
         this.stop();
         this.showEndState(true);
+        this.emit("end", {
+            name: this.options.playerName,
+            won: true,
+            kills: this.kills,
+            time: (Date.now() - this.startTime) / 1000,
+        });
     }
     lose() {
         console.log("Player loses :(");
@@ -15644,6 +15650,12 @@ class Game extends _Entity_AnimatedEntity__WEBPACK_IMPORTED_MODULE_6__["Animated
         this.controller.gameOver();
         this.stop();
         this.showEndState(false);
+        this.emit("end", {
+            name: this.options.playerName,
+            won: false,
+            kills: this.kills,
+            time: (Date.now() - this.startTime) / 1000,
+        });
     }
     showEndState(won) {
         const fadeOutTime = 500 / 1000;
@@ -16189,6 +16201,7 @@ window["start"] = function (player1, player2, player3, player4) {
     games.forEach((g, i) => {
         g.x = i * 480;
         app.stage.addChild(g);
+        g.on("end", registerGameResult);
     });
     PIXI.loader
         .load(() => {

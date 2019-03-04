@@ -188,6 +188,12 @@ export class Game extends AnimatedEntity {
         this.text.explode("You win!");
         this.stop();
         this.showEndState(true);
+        this.emit("end", {
+            name: this.options.playerName,
+            won: true,
+            kills: this.kills,
+            time: (Date.now() - this.startTime) / 1000,
+        });
     }
 
     private lose(): void {
@@ -196,6 +202,12 @@ export class Game extends AnimatedEntity {
         this.controller.gameOver();
         this.stop();
         this.showEndState(false);
+        this.emit("end", {
+            name: this.options.playerName,
+            won: false,
+            kills: this.kills,
+            time: (Date.now() - this.startTime) / 1000,
+        });
     }
 
     private showEndState(won: boolean): void {
