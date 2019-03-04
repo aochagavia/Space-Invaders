@@ -40,9 +40,9 @@
             <span>{{ i+1 }}.</span>
             {{ player.nickname }}
           </div>
-          <div class="w-1/2 flex">
+          <div class="w-1/2 flex items-center">
             <div class="w-1/4">
-              {{ player.score }}
+              {{ player.kills }} / {{ player.time }}
             </div>
             <div class="w-3/4 text-grey">
               {{ randomText(i) }}
