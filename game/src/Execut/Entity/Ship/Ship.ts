@@ -27,12 +27,12 @@ export class Ship extends AnimatedEntity implements ShipInterface {
         colorFilter.matrix = [1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0];
         this.filters = [colorFilter];
 
-        this.sprite = new Sprite(PIXI.loader.resources[`./images/ship.png`].texture);
+        this.sprite = new Sprite(PIXI.loader.resources['./assets/game/images/ship.png'].texture);
         this.sprite.x = -this.sprite.width / 2;
         this.addChild(this.sprite);
 
         for (let i = 0; i < options.shipShields; i++) {
-            let shield = new Sprite(PIXI.loader.resources[`./images/ship_shield.png`].texture);
+            let shield = new Sprite(PIXI.loader.resources['./assets/game/images/ship_shield.png'].texture);
             shield.x = -shield.width / 2;
             shield.y = -10 - (i * 5);
             this.addChild(shield);

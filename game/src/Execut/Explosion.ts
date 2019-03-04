@@ -9,11 +9,11 @@ export class Explosion extends Container {
         super();
 
         let textures = [
-            Texture.fromImage("./images/explosion0.png"),
-            Texture.fromImage("./images/explosion1.png"),
-            Texture.fromImage("./images/explosion2.png"),
-            Texture.fromImage("./images/explosion3.png"),
-            Texture.fromImage("./images/explosion4.png"),
+            Texture.fromImage("./assets/game/images/explosion0.png"),
+            Texture.fromImage("./assets/game/images/explosion1.png"),
+            Texture.fromImage("./assets/game/images/explosion2.png"),
+            Texture.fromImage("./assets/game/images/explosion3.png"),
+            Texture.fromImage("./assets/game/images/explosion4.png"),
         ];
 
         this.sprite = new AnimatedSprite(textures);

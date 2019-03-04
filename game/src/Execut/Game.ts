@@ -83,7 +83,7 @@ export class Game extends AnimatedEntity {
         this.line.y = 1000;
         this.addChild(this.line);
 
-        this.skull = new Sprite(PIXI.loader.resources[`./images/alienskull.png`].texture);
+        this.skull = new Sprite(PIXI.loader.resources[`./assets/game/images/alienskull.png`].texture);
         this.skull.x = 240 - this.skull.width / 2;
         this.skull.y = 1040 - this.skull.height / 2;
         this.addChild(this.skull);

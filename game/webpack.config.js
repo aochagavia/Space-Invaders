@@ -6,7 +6,7 @@ module.exports = {
     entry: "./src/index.ts",
     mode: "development",
     output: {
-        filename: "bundle.js",
+        filename: "assets/game/bundle.js",
         path: __dirname + "/dist"
     },
 
@@ -53,16 +53,12 @@ module.exports = {
         new CopyWebpackPlugin([
             {
                 from: "./node_modules/pixi.js/dist/pixi.js",
-                to: "pixi.js",
+                to: "assets/game/pixi.js",
             },
             {
-                from: "./src/images",
-                to: "images",
-            },
-            {
-                from: "./src/fonts",
-                to: "fonts",
-            },
+                from: "./src/assets",
+                to: "assets",
+            }
         ]),
     ]
 };

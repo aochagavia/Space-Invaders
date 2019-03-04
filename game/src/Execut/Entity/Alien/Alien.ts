@@ -12,13 +12,13 @@ export class Alien extends Entity {
     private isAlive = true;
 
     private readonly sprites = [
-        './images/alien01.png',
-        './images/alien02.png',
-        './images/alien03.png',
-        './images/alien04.png',
-        './images/alien05.png',
-        './images/alien06.png',
-        './images/alien07.png',
+        './assets/game/images/alien01.png',
+        './assets/game/images/alien02.png',
+        './assets/game/images/alien03.png',
+        './assets/game/images/alien04.png',
+        './assets/game/images/alien05.png',
+        './assets/game/images/alien06.png',
+        './assets/game/images/alien07.png',
     ];
 
     constructor(spriteId: number = 0, r: number = 1, g: number = 1, b: number = 1) {

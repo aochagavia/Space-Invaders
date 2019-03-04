@@ -6,7 +6,7 @@ export class AlienBullet extends Bullet {
 
     constructor() {
         super();
-        this.sprite = new Sprite(PIXI.loader.resources["./images/alienbullet.png"].texture);
+        this.sprite = new Sprite(PIXI.loader.resources["./assets/game/images/alienbullet.png"].texture);
         this.sprite.x = -5;
         this.sprite.y = -30;
         this.addChild(this.sprite);

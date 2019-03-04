@@ -1,26 +1,27 @@
 import Application = PIXI.Application;
 import {Game} from "./Execut/Game";
 import {Options} from "./Execut/Options";
+import {Result} from "./Execut/Result";
 
 PIXI.loader
     .add([
-        "./images/alien01.png",
-        "./images/alien02.png",
-        "./images/alien03.png",
-        "./images/alien04.png",
-        "./images/alien05.png",
-        "./images/alien06.png",
-        "./images/alien07.png",
-        "./images/alienskull.png",
-        "./images/bullet.png",
-        "./images/alienbullet.png",
-        "./images/explosion0.png",
-        "./images/explosion1.png",
-        "./images/explosion2.png",
-        "./images/explosion3.png",
-        "./images/explosion4.png",
-        "./images/ship.png",
-        "./images/ship_shield.png",
+        "./assets/game/images/alien01.png",
+        "./assets/game/images/alien02.png",
+        "./assets/game/images/alien03.png",
+        "./assets/game/images/alien04.png",
+        "./assets/game/images/alien05.png",
+        "./assets/game/images/alien06.png",
+        "./assets/game/images/alien07.png",
+        "./assets/game/images/alienskull.png",
+        "./assets/game/images/bullet.png",
+        "./assets/game/images/alienbullet.png",
+        "./assets/game/images/explosion0.png",
+        "./assets/game/images/explosion1.png",
+        "./assets/game/images/explosion2.png",
+        "./assets/game/images/explosion3.png",
+        "./assets/game/images/explosion4.png",
+        "./assets/game/images/ship.png",
+        "./assets/game/images/ship_shield.png",
     ]);
 
 let app = new Application(1920, 1080);
@@ -29,8 +30,12 @@ let app = new Application(1920, 1080);
 // @ts-ignore We know it's not null
 document.getElementById("gameContainer").appendChild(app.view);
 
+let results: Array<Result> = [];
+
 // @ts-ignore
 window["start"] = function(player1: Options, player2: Options, player3: Options, player4: Options) {
+    results = [];
+
     app.stage.children
         .filter(c => c instanceof Game)
         .forEach(g => {
@@ -131,3 +136,10 @@ window.addEventListener('keydown', evt => {
 });
 
 
+function registerGameResult(result: Result): void {
+    results.push(result);
+    if (results.length == 4) {
+        // @ts-ignore Provided by framework
+        sendMatchResult(results);
+    }
+}
