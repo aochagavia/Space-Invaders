@@ -55,7 +55,7 @@ export class State {
         copy.finished = this.finished;
         copy.leaderboard = this.leaderboard;
 
-        await storage.setItem('state', this);
+        await storage.setItem('state', copy);
 
         console.timeEnd('snapshot');
     }
@@ -106,17 +106,24 @@ export class State {
         const id = this.nextPlayerId;
         this.nextPlayerId++;
 
-        this.waiting.push({ id, nickname, score: 0 });
+        this.waiting.push({ id, nickname, kills: 0, time: 0, won: false });
         this.makeSnapshot();
     }
 
     matchFinished(players: Player[]) {
         this.playing = [];
 
-        // FIXME: sorting is currently broken because the client sends strings instead of numbers in the score
         this.leaderboard = this.leaderboard
             .concat(players)
-            .sort((p1, p2) => p1.score > p2.score ? -1 : 1)
+            .sort((p1, p2) => {
+                if (p1.kills > p2.kills) return -1;
+                if (p1.kills < p2.kills) return 1;
+
+                // Note: here p1.kills equals p2.kills
+                // Therefore p1.won implies p2.won
+                if (p1.won) return p1.time < p2.time ? -1 : 1;
+                else return p1.time > p2.time ? -1 : 1;
+            })
             .slice(0, LEADERBOARD_LENGTH);
 
         this.finished = this.finished.concat(players);
