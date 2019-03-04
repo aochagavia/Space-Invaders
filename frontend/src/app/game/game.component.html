@@ -1,4 +1,4 @@
-<div *ngIf="serverOnline && player1">
+<div [hidden]="!serverOnline || !playing">
   <style type="text/css">
     @font-face {
       font-family: "si";
@@ -8,9 +8,9 @@
   <div style="font-family: 'si'; height: 0;">&nbsp;<!-- force browser to load font --></div>
   <div id="gameContainer"></div>
 </div>
-<div *ngIf="serverOnline && !player1">
+<div [hidden]="!serverOnline || playing">
   Waiting for players
 </div>
-<div *ngIf="!serverOnline">
+<div [hidden]="serverOnline">
   Connection lost, trying to reconnect
 </div>

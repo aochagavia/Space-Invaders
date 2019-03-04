@@ -1,8 +1,7 @@
 import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { MatchService } from '../match.service';
-import { Subject } from 'rxjs';
+import { Subject, ReplaySubject, combineLatest } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { Player } from 'shared/lib/player.model';
 import { SocketHealthService } from '../socket-health.service';
 
 @Component({
@@ -11,26 +10,26 @@ import { SocketHealthService } from '../socket-health.service';
   styleUrls: ['./game.component.css']
 })
 export class GameComponent implements OnInit, OnDestroy, AfterViewInit {
+  private scriptLoaded$ = new ReplaySubject(1);
   private destroyed$ = new Subject();
-  player1: Player;
-  player2: Player;
 
   serverOnline = false;
+  playing = false;
 
   constructor(private matchService: MatchService, private socketHealthService: SocketHealthService) { }
 
   ngOnInit() {
-    this.matchService.matches().pipe(takeUntil(this.destroyed$)).subscribe(players => {
-      // See PLAYERS_PER_MATCH in the server
-      this.player1 = players[0];
-      this.player2 = players[1];
+    combineLatest(this.matchService.matches(), this.scriptLoaded$).pipe(
+      takeUntil(this.destroyed$),
+    ).subscribe(([players, _]) => {
+      this.playing = true;
+      console.log('Players:', players);
+      // @ts-ignore window method in game JS
+      start();
 
-      console.log("players!", players);
-
-      setTimeout(() => {
-        // @ts-ignore window method in game JS
-        start();
-      }, 500);
+      // FIXME: we need to get notified when all the games finish, so we can post the results to the server
+      // this.matchService.sendMatchResult(finishedPlayers);
+      // this.playing = false;
     });
 
     this.socketHealthService.connected().pipe(takeUntil(this.destroyed$)).subscribe(connected => {
@@ -39,6 +38,7 @@ export class GameComponent implements OnInit, OnDestroy, AfterViewInit {
         this.matchService.registerMatchServer();
       } else {
         this.serverOnline = false;
+        this.playing = false;
       }
     });
   }
@@ -49,8 +49,11 @@ export class GameComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngAfterViewInit() {
     const pixi = this.addScript('./assets/game/pixi.js');
-    pixi.addEventListener('load', (evt) => {
-      this.addScript('./assets/game/bundle.js');
+    pixi.addEventListener('load', () => {
+      const game = this.addScript('./assets/game/bundle.js');
+      game.addEventListener('load', () => {
+        this.scriptLoaded$.next();
+      });
     });
     window["sendMatchResult"] = this.matchService.sendMatchResult.bind(this.matchService);
   }
@@ -62,12 +65,4 @@ export class GameComponent implements OnInit, OnDestroy, AfterViewInit {
     document.body.appendChild(s);
     return s;
   }
-
-  sendResults(event: any) {
-    event.preventDefault();
-    this.matchService.sendMatchResult([ this.player1, this.player2 ]);
-    this.player1 = undefined;
-    this.player2 = undefined;
-  }
-
 }
