@@ -13,6 +13,9 @@
     <h1 class="mb-8 text-center">
       High Scores
     </h1>
+      <div class="text-center text-grey-dark" *ngIf="finishedPlayers.length === 0">
+        Be The First One Yet
+      </div>
     <div class="text-lg">
       <div *ngFor="let player of finishedPlayers; index as i">
         <div class="mb-4 flex" *ngIf="i === 0">
@@ -28,7 +31,7 @@
               {{ player.score }}
             </div>
             <div class="w-3/4 text-grey flex items-center">
-              Winner Takes All
+              {{ randomText(i) }}
             </div>
           </div>
         </div>
@@ -42,7 +45,7 @@
               {{ player.score }}
             </div>
             <div class="w-3/4 text-grey">
-              Almost There
+              {{ randomText(i) }}
             </div>
           </div>
         </div>
