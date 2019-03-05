@@ -203,7 +203,7 @@ export class Game extends AnimatedEntity {
         this.stop();
         this.showEndState(false);
         this.emit("end", {
-            name: this.options.playerName,
+            nickname: this.options.playerName,
             won: false,
             kills: this.kills,
             time: (Date.now() - this.startTime) / 1000,

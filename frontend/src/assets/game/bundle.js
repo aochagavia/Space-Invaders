@@ -15651,7 +15651,7 @@ class Game extends _Entity_AnimatedEntity__WEBPACK_IMPORTED_MODULE_6__["Animated
         this.stop();
         this.showEndState(false);
         this.emit("end", {
-            name: this.options.playerName,
+            nickname: this.options.playerName,
             won: false,
             kills: this.kills,
             time: (Date.now() - this.startTime) / 1000,
