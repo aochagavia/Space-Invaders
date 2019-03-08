@@ -102,11 +102,11 @@ export class State {
         return this.playing;
     }
 
-    newPlayer(nickname: string) {
-        const id = this.nextPlayerId;
+    newPlayer(player: Player) {
+        player.id = this.nextPlayerId;
         this.nextPlayerId++;
 
-        this.waiting.push({ id, nickname, kills: 0, time: 0, won: false });
+        this.waiting.push(player);
         this.makeSnapshot();
     }
 

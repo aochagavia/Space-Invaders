@@ -73,7 +73,7 @@ async function initialize() {
       return;
     }
 
-    state.newPlayer(player.nickname);
+    state.newPlayer(player);
 
     // Trigger new match if possible
     maybeStartMatch();
