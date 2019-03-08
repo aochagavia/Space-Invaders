@@ -47,6 +47,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
     'Nice View Up Here',
     'No. 1',
     'Lonely Here',
+    'Master',
+    'King',
+    'Emperor',
+    'Insanely Good'
   ]
 
   private runnerUpTexts = [
@@ -55,6 +59,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
     'Almost Top',
     'Not Too Bad',
     'Eternal No. 2',
+    'Just Missed It',
+    'I Want Higher',
   ]
 
   private otherTexts = [
@@ -84,8 +90,15 @@ export class DashboardComponent implements OnInit, OnDestroy {
     'Star Destroyer',
     'Prospering',
     'Living The Life',
-    'Alert All Commands',
     'Deploy The Fleet',
+    'Solid',
+    'Hyper',
+    'Brutal',
+    'Blaster',
+    'Extreme',
+    'Awesome',
+    'Insane',
+    'Beastly',
   ]
 
   randomText(position: number) {
