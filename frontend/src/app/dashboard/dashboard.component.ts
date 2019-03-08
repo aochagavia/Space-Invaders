@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Subject, timer } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { DashboardService } from '../dashboard.service';
 import { Player } from 'shared/lib/player.model';
@@ -101,18 +101,21 @@ export class DashboardComponent implements OnInit, OnDestroy {
     'Beastly',
   ]
 
+  private playerTexts: string[] = [];
   randomText(position: number) {
-    if (position == 0)
-    {
-      return this.winnerTexts[Math.floor(Math.random() * this.winnerTexts.length)];
+    if (this.playerTexts[position]) {
+      return this.playerTexts[position];
     }
-    
-    if (position == 1)
-    {
-      return this.runnerUpTexts[Math.floor(Math.random() * this.runnerUpTexts.length)];
+
+    if (position === 0) {
+      this.playerTexts[position] = this.winnerTexts[Math.floor(Math.random() * this.winnerTexts.length)];
+    } else if (position === 1) {
+      this.playerTexts[position] = this.runnerUpTexts[Math.floor(Math.random() * this.runnerUpTexts.length)];
+    } else {
+      this.playerTexts[position] = this.otherTexts[Math.floor(Math.random() * this.otherTexts.length)];
     }
-    
-    return this.otherTexts[Math.floor(Math.random() * this.otherTexts.length)];
+
+    return this.playerTexts[position];
   }
 
 }

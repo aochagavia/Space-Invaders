@@ -15526,6 +15526,7 @@ class Game extends _Entity_AnimatedEntity__WEBPACK_IMPORTED_MODULE_6__["Animated
         super();
         this.startTime = 0;
         this.kills = 0;
+        console.log(options);
         this.options = options;
         // fixme: mask here and on bullets makes bullets disappear?
         // this.mask = new Graphics();
@@ -15733,6 +15734,20 @@ class Options {
         this.alienFireInterval = 3000;
         this.alienMoveDown = 0.1;
     }
+    static fromSettings(settings) {
+        return {
+            playerName: settings.nickname,
+            shipSpeed: 15,
+            shipBulletSpeed: Math.floor(settings.settings_FIREPOWER * 5 + 5),
+            shipFireInterval: 3000 - (11 - settings.settings_FIREPOWER) * 150,
+            shipDodgeChance: Math.floor(settings.settings_DODGE_CHANGE * 0.05),
+            shipShields: Math.floor(settings.settings_SHIELDS),
+            shieldThickness: Math.floor(settings.settings_DEFENSE_THICKNESS),
+            shieldWidth: Math.floor(settings.settings_DEFENSE_WIDTH),
+            alienFireInterval: 3000,
+            alienMoveDown: 0
+        };
+    }
 }
 
 
@@ -15756,7 +15771,8 @@ class Random {
         this.a = parseInt(seed.toLowerCase().replace(/[^0-9a-z]/g, ''), 36);
     }
     next() {
-        return this.mulberry32();
+        //return this.mulberry32();
+        return Math.random();
     }
     mulberry32() {
         let t = this.a += 0x6D2B79F5;
@@ -16144,59 +16160,62 @@ window["start"] = function (player1, player2, player3, player4) {
     for (let i = app.stage.children.length - 1; i >= 0; i--) {
         app.stage.removeChild(app.stage.children[i]);
     }
-    player1 = player1 || {
-        playerName: 'Speedy',
-        shipSpeed: 30,
-        shipBulletSpeed: 25,
-        shipFireInterval: 800,
-        shipDodgeChance: 0.3,
-        shipShields: 1,
-        shieldThickness: 2,
-        shieldWidth: 4,
-        alienMoveDown: 1,
-        alienFireInterval: 2000,
-    };
-    player2 = player2 || {
-        playerName: 'Shooty',
-        shipSpeed: 20,
-        shipBulletSpeed: 25,
-        shipFireInterval: 600,
-        shipDodgeChance: 0.3,
-        shipShields: 1,
-        shieldThickness: 2,
-        shieldWidth: 4,
-        alienMoveDown: 1,
-        alienFireInterval: 2000,
-    };
-    player3 = player3 || {
-        playerName: 'Rockety',
-        shipSpeed: 20,
-        shipBulletSpeed: 40,
-        shipFireInterval: 800,
-        shipDodgeChance: 0.3,
-        shipShields: 1,
-        shieldThickness: 2,
-        shieldWidth: 4,
-        alienMoveDown: 1,
-        alienFireInterval: 2000,
-    };
-    player4 = player4 || {
-        playerName: 'Dodgy',
-        shipSpeed: 20,
-        shipBulletSpeed: 25,
-        shipFireInterval: 800,
-        shipDodgeChance: 0.5,
-        shipShields: 1,
-        shieldThickness: 2,
-        shieldWidth: 4,
-        alienMoveDown: 1,
-        alienFireInterval: 2000,
-    };
+    // player1 = player1 || {
+    //     playerName: 'Speedy',
+    //     shipSpeed: 30,
+    //     shipBulletSpeed: 25,
+    //     shipFireInterval: 800,
+    //     shipDodgeChance: 0.3,
+    //     shipShields: 1,
+    //     shieldThickness: 2,
+    //     shieldWidth: 4,
+    //     alienMoveDown: 1,
+    //     alienFireInterval: 2000,
+    // };
+    //
+    // player2 = player2 || {
+    //     playerName: 'Shooty',
+    //     shipSpeed: 20,
+    //     shipBulletSpeed: 25,
+    //     shipFireInterval: 600,
+    //     shipDodgeChance: 0.3,
+    //     shipShields: 1,
+    //     shieldThickness: 2,
+    //     shieldWidth: 4,
+    //     alienMoveDown: 1,
+    //     alienFireInterval: 2000,
+    // };
+    //
+    // player3 = player3 || {
+    //     playerName: 'Rockety',
+    //     shipSpeed: 20,
+    //     shipBulletSpeed: 40,
+    //     shipFireInterval: 800,
+    //     shipDodgeChance: 0.3,
+    //     shipShields: 1,
+    //     shieldThickness: 2,
+    //     shieldWidth: 4,
+    //     alienMoveDown: 1,
+    //     alienFireInterval: 2000,
+    // };
+    //
+    // player4 = player4 || {
+    //     playerName: 'Dodgy',
+    //     shipSpeed: 20,
+    //     shipBulletSpeed: 25,
+    //     shipFireInterval: 800,
+    //     shipDodgeChance: 0.5,
+    //     shipShields: 1,
+    //     shieldThickness: 2,
+    //     shieldWidth: 4,
+    //     alienMoveDown: 1,
+    //     alienFireInterval: 2000,
+    // };
     let games = [
-        new _Execut_Game__WEBPACK_IMPORTED_MODULE_0__["Game"](player1 || new _Execut_Options__WEBPACK_IMPORTED_MODULE_1__["Options"]()),
-        new _Execut_Game__WEBPACK_IMPORTED_MODULE_0__["Game"](player2 || new _Execut_Options__WEBPACK_IMPORTED_MODULE_1__["Options"]()),
-        new _Execut_Game__WEBPACK_IMPORTED_MODULE_0__["Game"](player3 || new _Execut_Options__WEBPACK_IMPORTED_MODULE_1__["Options"]()),
-        new _Execut_Game__WEBPACK_IMPORTED_MODULE_0__["Game"](player4 || new _Execut_Options__WEBPACK_IMPORTED_MODULE_1__["Options"]()),
+        new _Execut_Game__WEBPACK_IMPORTED_MODULE_0__["Game"](_Execut_Options__WEBPACK_IMPORTED_MODULE_1__["Options"].fromSettings(player1)),
+        new _Execut_Game__WEBPACK_IMPORTED_MODULE_0__["Game"](_Execut_Options__WEBPACK_IMPORTED_MODULE_1__["Options"].fromSettings(player2)),
+        new _Execut_Game__WEBPACK_IMPORTED_MODULE_0__["Game"](_Execut_Options__WEBPACK_IMPORTED_MODULE_1__["Options"].fromSettings(player3)),
+        new _Execut_Game__WEBPACK_IMPORTED_MODULE_0__["Game"](_Execut_Options__WEBPACK_IMPORTED_MODULE_1__["Options"].fromSettings(player4)),
     ];
     games.forEach((g, i) => {
         g.x = i * 480;

@@ -4,7 +4,7 @@ import { Socket } from 'socket.io';
 import storage from 'node-persist';
 
 const LEADERBOARD_LENGTH = 20;
-const PLAYERS_PER_MATCH = 2;
+const PLAYERS_PER_MATCH = 4;
 
 export class State {
     private nextPlayerId = 0;

@@ -25,7 +25,7 @@ export class GameComponent implements OnInit, OnDestroy, AfterViewInit {
       this.playing = true;
       console.log('Players:', players);
       // @ts-ignore window method in game JS
-      start();
+      start(players[0], players[1], players[2], players[3]);
 
       // FIXME: we need to get notified when all the games finish, so we can post the results to the server
       // this.matchService.sendMatchResult(finishedPlayers);
