@@ -2,6 +2,7 @@ import Application = PIXI.Application;
 import {Game} from "./Execut/Game";
 import {Options} from "./Execut/Options";
 import {Result} from "./Execut/Result";
+import {PlayerSettings} from "./Execut/PlayerSettings";
 
 PIXI.loader
     .add([
@@ -33,7 +34,7 @@ document.getElementById("gameContainer").appendChild(app.view);
 let results: Array<Result> = [];
 
 // @ts-ignore
-window["start"] = function(player1: Options, player2: Options, player3: Options, player4: Options) {
+window["start"] = function(player1: PlayerSettings, player2: PlayerSettings, player3: PlayerSettings, player4: PlayerSettings) {
     results = [];
 
     app.stage.children
@@ -46,63 +47,63 @@ window["start"] = function(player1: Options, player2: Options, player3: Options,
         app.stage.removeChild(app.stage.children[i]);
     }
 
-    player1 = player1 || {
-        playerName: 'Speedy',
-        shipSpeed: 30,
-        shipBulletSpeed: 25,
-        shipFireInterval: 800,
-        shipDodgeChance: 0.3,
-        shipShields: 1,
-        shieldThickness: 2,
-        shieldWidth: 4,
-        alienMoveDown: 1,
-        alienFireInterval: 2000,
-    };
-
-    player2 = player2 || {
-        playerName: 'Shooty',
-        shipSpeed: 20,
-        shipBulletSpeed: 25,
-        shipFireInterval: 600,
-        shipDodgeChance: 0.3,
-        shipShields: 1,
-        shieldThickness: 2,
-        shieldWidth: 4,
-        alienMoveDown: 1,
-        alienFireInterval: 2000,
-    };
-
-    player3 = player3 || {
-        playerName: 'Rockety',
-        shipSpeed: 20,
-        shipBulletSpeed: 40,
-        shipFireInterval: 800,
-        shipDodgeChance: 0.3,
-        shipShields: 1,
-        shieldThickness: 2,
-        shieldWidth: 4,
-        alienMoveDown: 1,
-        alienFireInterval: 2000,
-    };
-
-    player4 = player4 || {
-        playerName: 'Dodgy',
-        shipSpeed: 20,
-        shipBulletSpeed: 25,
-        shipFireInterval: 800,
-        shipDodgeChance: 0.5,
-        shipShields: 1,
-        shieldThickness: 2,
-        shieldWidth: 4,
-        alienMoveDown: 1,
-        alienFireInterval: 2000,
-    };
+    // player1 = player1 || {
+    //     playerName: 'Speedy',
+    //     shipSpeed: 30,
+    //     shipBulletSpeed: 25,
+    //     shipFireInterval: 800,
+    //     shipDodgeChance: 0.3,
+    //     shipShields: 1,
+    //     shieldThickness: 2,
+    //     shieldWidth: 4,
+    //     alienMoveDown: 1,
+    //     alienFireInterval: 2000,
+    // };
+    //
+    // player2 = player2 || {
+    //     playerName: 'Shooty',
+    //     shipSpeed: 20,
+    //     shipBulletSpeed: 25,
+    //     shipFireInterval: 600,
+    //     shipDodgeChance: 0.3,
+    //     shipShields: 1,
+    //     shieldThickness: 2,
+    //     shieldWidth: 4,
+    //     alienMoveDown: 1,
+    //     alienFireInterval: 2000,
+    // };
+    //
+    // player3 = player3 || {
+    //     playerName: 'Rockety',
+    //     shipSpeed: 20,
+    //     shipBulletSpeed: 40,
+    //     shipFireInterval: 800,
+    //     shipDodgeChance: 0.3,
+    //     shipShields: 1,
+    //     shieldThickness: 2,
+    //     shieldWidth: 4,
+    //     alienMoveDown: 1,
+    //     alienFireInterval: 2000,
+    // };
+    //
+    // player4 = player4 || {
+    //     playerName: 'Dodgy',
+    //     shipSpeed: 20,
+    //     shipBulletSpeed: 25,
+    //     shipFireInterval: 800,
+    //     shipDodgeChance: 0.5,
+    //     shipShields: 1,
+    //     shieldThickness: 2,
+    //     shieldWidth: 4,
+    //     alienMoveDown: 1,
+    //     alienFireInterval: 2000,
+    // };
 
     let games = [
-        new Game(player1 || new Options()),
-        new Game(player2 || new Options()),
-        new Game(player3 || new Options()),
-        new Game(player4 || new Options()),
+        new Game(Options.fromSettings(player1)),
+        new Game(Options.fromSettings(player2)),
+        new Game(Options.fromSettings(player3)),
+        new Game(Options.fromSettings(player4)),
     ];
 
     games.forEach((g, i) => {

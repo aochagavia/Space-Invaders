@@ -9,7 +9,8 @@ export class Random {
     }
 
     public next(): number {
-        return this.mulberry32();
+        //return this.mulberry32();
+        return Math.random();
     }
 
     private mulberry32(): number {
