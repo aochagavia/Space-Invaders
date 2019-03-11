@@ -48,6 +48,8 @@ export class GameComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngAfterViewInit() {
+    document.body.style.overflow = 'hidden';
+
     const pixi = this.addScript('./assets/game/pixi.js');
     pixi.addEventListener('load', () => {
       const game = this.addScript('./assets/game/bundle.js');
