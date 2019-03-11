@@ -61,10 +61,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
     'Eternal No. 2',
     'Just Missed It',
     'I Want Higher',
+    'Starkiller',
+    'Monster'
   ]
 
   private otherTexts = [
-    '',
     'Way To Go',
     'Up!',
     'Made The List',
@@ -99,6 +100,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     'Awesome',
     'Insane',
     'Beastly',
+    'Guardian'
   ]
 
   private playerTexts: string[] = [];
@@ -116,6 +118,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
 
     return this.playerTexts[position];
+  }
+
+  padKills(num: number) {
+    var s = "000000000" + num;
+    return s.substr(s.length - 2);
   }
 
 }

@@ -10,7 +10,8 @@
 </div>
 <div class="max-w-5xl mx-auto flex mt-12 p-8" *ngIf="dashboardServerOnline">
   <div class="w-3/5">
-    <h1 class="mb-8 text-center">
+    <h1 class="mb-8 flex items-center justify-center">
+      <img src="assets/game/images/alien02.png" alt="" class="mr-3">
       High Scores
     </h1>
       <div class="text-center text-grey-dark" *ngIf="finishedPlayers.length === 0">
@@ -27,11 +28,16 @@
             </span>
           </div>
           <div class="w-1/2 flex">
-            <div class="w-2/5 flex items-center">
-              {{ player.kills }} / {{ player.time }}
+            <div class="w-1/2 flex items-center">
+              <span class="mr-1">{{ padKills(player.kills) }}</span>
+              <img src="assets/game/images/alienskull.png" alt="" class="w-6 mr-3 mb-1">
+              <span class="text-grey mr-3">in</span>
+              <span class="mr-1">{{ player.time.toFixed(1) }}</span><span class="text-grey-light">s</span>
             </div>
-            <div class="w-3/5 text-grey flex items-center">
-              {{ randomText(i) }}
+            <div class="w-1/2 flex items-center">
+              <div class="text-sm text-teal-darker speech-bubble p-3 flex items-center w-full">
+                {{ randomText(i) }}
+              </div>
             </div>
           </div>
         </div>
@@ -41,10 +47,13 @@
             {{ player.nickname }}
           </div>
           <div class="w-1/2 flex items-center">
-            <div class="w-2/5">
-              {{ player.kills }} / {{ player.time }}
+            <div class="w-1/2 flex items-center">
+              <span class="mr-1">{{ padKills(player.kills) }}</span>
+              <img src="assets/game/images/alienskull.png" alt="" class="w-6 mr-3 mb-1">
+              <span class="text-grey mr-3">in</span>
+              <span class="mr-1">{{ player.time.toFixed(1) }}</span><span class="text-grey-light">s</span>
             </div>
-            <div class="w-3/5 text-grey">
+            <div class="w-1/2 text-sm text-teal-darker speech-bubble p-3 flex items-center">
               {{ randomText(i) }}
             </div>
           </div>
@@ -53,7 +62,8 @@
     </div>
   </div>
   <div class="w-2/5">
-    <h2 class="text-2xl mb-6 text-center">
+    <h2 class="text-2xl mb-6 flex items-center justify-center">
+      <img src="assets/game/images/alien04.png" alt="" class="mr-2">
       Waiting List
     </h2>
     <div class="text-center text-grey-dark" *ngIf="playingPlayers.length === 0 && waitingPlayers.length === 0">
