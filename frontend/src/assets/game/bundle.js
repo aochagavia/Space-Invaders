@@ -15526,7 +15526,6 @@ class Game extends _Entity_AnimatedEntity__WEBPACK_IMPORTED_MODULE_6__["Animated
         super();
         this.startTime = 0;
         this.kills = 0;
-        console.log(options);
         this.options = options;
         // fixme: mask here and on bullets makes bullets disappear?
         // this.mask = new Graphics();
@@ -15639,7 +15638,7 @@ class Game extends _Entity_AnimatedEntity__WEBPACK_IMPORTED_MODULE_6__["Animated
         this.stop();
         this.showEndState(true);
         this.emit("end", {
-            name: this.options.playerName,
+            nickname: this.options.playerName,
             won: true,
             kills: this.kills,
             time: (Date.now() - this.startTime) / 1000,
