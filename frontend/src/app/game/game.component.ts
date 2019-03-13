@@ -1,8 +1,9 @@
 import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { MatchService } from '../match.service';
-import { Subject, ReplaySubject, combineLatest } from 'rxjs';
+import { Subject, ReplaySubject, combineLatest, timer } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { SocketHealthService } from '../socket-health.service';
+import { Player } from 'shared/lib/player.model';
 
 @Component({
   selector: 'app-game',
@@ -15,6 +16,7 @@ export class GameComponent implements OnInit, OnDestroy, AfterViewInit {
 
   serverOnline = false;
   playing = false;
+  demoPlaying = false;
 
   constructor(private matchService: MatchService, private socketHealthService: SocketHealthService) { }
 
@@ -22,15 +24,14 @@ export class GameComponent implements OnInit, OnDestroy, AfterViewInit {
     combineLatest(this.matchService.matches(), this.scriptLoaded$).pipe(
       takeUntil(this.destroyed$),
     ).subscribe(([players, _]) => {
+      this.demoPlaying = false;
       this.playing = true;
-      console.log('Players:', players);
+
       // @ts-ignore window method in game JS
       start(players[0], players[1], players[2], players[3]);
-
-      // FIXME: we need to get notified when all the games finish, so we can post the results to the server
-      // this.matchService.sendMatchResult(finishedPlayers);
-      // this.playing = false;
     });
+
+    this.scheduleDemoPlay();
 
     this.socketHealthService.connected().pipe(takeUntil(this.destroyed$)).subscribe(connected => {
       if (connected) {
@@ -39,6 +40,54 @@ export class GameComponent implements OnInit, OnDestroy, AfterViewInit {
       } else {
         this.serverOnline = false;
         this.playing = false;
+      }
+    });
+  }
+
+  scheduleDemoPlay() {
+    // Start a demo play after 30 seconds of inactivity
+    timer(30_000).pipe(takeUntil(this.destroyed$)).subscribe(() => {
+      if (!this.playing && !this.demoPlaying) {
+        this.demoPlaying = true;
+
+        const p1: Partial<Player> = {
+          nickname: 'Demo Player 1',
+          settings_DEFENSE_THICKNESS: 2,
+          settings_DODGE_CHANCE: 2,
+          settings_DEFENSE_WIDTH: 2,
+          settings_FIREPOWER: 4,
+          settings_SHIELDS: 0,
+        };
+
+        const p2: Partial<Player> = {
+          nickname: 'Demo Player 2',
+          settings_DEFENSE_THICKNESS: 2,
+          settings_DODGE_CHANCE: 2,
+          settings_DEFENSE_WIDTH: 2,
+          settings_FIREPOWER: 4,
+          settings_SHIELDS: 0,
+        };
+
+        const p3: Partial<Player> = {
+          nickname: 'Demo Player 3',
+          settings_DEFENSE_THICKNESS: 2,
+          settings_DODGE_CHANCE: 2,
+          settings_DEFENSE_WIDTH: 2,
+          settings_FIREPOWER: 4,
+          settings_SHIELDS: 0,
+        };
+
+        const p4: Partial<Player> = {
+          nickname: 'Demo Player 4',
+          settings_DEFENSE_THICKNESS: 2,
+          settings_DODGE_CHANCE: 2,
+          settings_DEFENSE_WIDTH: 2,
+          settings_FIREPOWER: 4,
+          settings_SHIELDS: 0,
+        };
+
+        // @ts-ignore window method in game JS
+        start(p1, p2, p3, p4);
       }
     });
   }
@@ -57,7 +106,17 @@ export class GameComponent implements OnInit, OnDestroy, AfterViewInit {
         this.scriptLoaded$.next();
       });
     });
-    window["sendMatchResult"] = this.matchService.sendMatchResult.bind(this.matchService);
+    window['sendMatchResult'] = result => {
+      if (this.demoPlaying) {
+        // Ignore the result, since it was just a demo round
+      } else {
+        this.matchService.sendMatchResult(result);
+      }
+
+      this.playing = false;
+      this.demoPlaying = false;
+      this.scheduleDemoPlay();
+    };
   }
 
   private addScript(src: string): Element {

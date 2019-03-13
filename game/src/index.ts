@@ -35,8 +35,6 @@ let results: Array<Result> = [];
 
 // @ts-ignore
 window["start"] = function(player1: PlayerSettings, player2: PlayerSettings, player3: PlayerSettings, player4: PlayerSettings) {
-    results = [];
-
     app.stage.children
         .filter(c => c instanceof Game)
         .forEach(g => {
@@ -98,6 +96,8 @@ window["start"] = function(player1: PlayerSettings, player2: PlayerSettings, pla
     //     alienMoveDown: 1,
     //     alienFireInterval: 2000,
     // };
+
+    results = [];
 
     let games = [
         new Game(Options.fromSettings(player1)),

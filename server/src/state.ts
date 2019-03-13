@@ -7,7 +7,6 @@ const LEADERBOARD_LENGTH = 20;
 const PLAYERS_PER_MATCH = 4;
 
 export class State {
-    private nextPlayerId = 0;
     private waiting: Player[] = [];
     private playing: Player[] = [];
     private finished: Player[] = [];
@@ -27,7 +26,6 @@ export class State {
         if (obj) {
             console.log('Loading from snapshot...');
 
-            state.nextPlayerId = obj.nextPlayerId;
             state.waiting = obj.waiting;
             state.playing = obj.playing;
             state.finished = obj.finished;
@@ -49,7 +47,6 @@ export class State {
 
         // We make a copy to avoid making a snapshot of the matchServerSocket
         const copy = new State();
-        copy.nextPlayerId = this.nextPlayerId;
         copy.waiting = this.waiting;
         copy.playing = this.playing;
         copy.finished = this.finished;
@@ -103,9 +100,6 @@ export class State {
     }
 
     newPlayer(player: Player) {
-        player.id = this.nextPlayerId;
-        this.nextPlayerId++;
-
         this.waiting.push(player);
         this.makeSnapshot();
     }
