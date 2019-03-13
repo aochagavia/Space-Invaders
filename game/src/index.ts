@@ -34,6 +34,48 @@ document.getElementById("gameContainer").appendChild(app.view);
 let results: Array<Result> = [];
 
 // @ts-ignore
+window["devStart"] = () => {
+    const player1 = {
+        nickname: 'Defensive',
+        settings_DEFENSE_THICKNESS: 0, // 0-10
+        settings_DEFENSE_WIDTH: 10, // 0-10
+        settings_DODGE_CHANCE: 0, // 0-10
+        settings_FIREPOWER: 0, // 0-10
+        settings_SHIELDS: 0, //0-4
+    };
+
+    const player2 = {
+        nickname: 'Balanced',
+        settings_DEFENSE_THICKNESS: 0, // 0-10
+        settings_DEFENSE_WIDTH: 2, // 0-10
+        settings_DODGE_CHANCE: 2, // 0-10
+        settings_FIREPOWER: 3, // 0-10
+        settings_SHIELDS: 1, //0-4
+    };
+
+    const player3 = {
+        nickname: 'Shieldy',
+        settings_DEFENSE_THICKNESS: 0, // 0-10
+        settings_DEFENSE_WIDTH: 0, // 0-10
+        settings_DODGE_CHANCE: 0, // 0-10
+        settings_FIREPOWER: 0, // 0-10
+        settings_SHIELDS: 4, //0-4
+    };
+
+    const player4 = {
+        nickname: 'Dodgy',
+        settings_DEFENSE_THICKNESS: 0, // 0-10
+        settings_DEFENSE_WIDTH: 0, // 0-10
+        settings_DODGE_CHANCE: 10, // 0-10
+        settings_FIREPOWER: 0, // 0-10
+        settings_SHIELDS: 0, //0-4
+    };
+
+    // @ts-ignore
+    window["start"](player1, player2, player3, player4);
+};
+
+// @ts-ignore
 window["start"] = function(player1: PlayerSettings, player2: PlayerSettings, player3: PlayerSettings, player4: PlayerSettings) {
     app.stage.children
         .filter(c => c instanceof Game)
@@ -44,42 +86,6 @@ window["start"] = function(player1: PlayerSettings, player2: PlayerSettings, pla
     for (let i = app.stage.children.length - 1; i >= 0; i--) {
         app.stage.removeChild(app.stage.children[i]);
     }
-
-    // player1 = player1 || {
-    //     nickname: 'Defensive',
-    //     settings_DEFENSE_THICKNESS: 0, // 0-10
-    //     settings_DEFENSE_WIDTH: 10, // 0-10
-    //     settings_DODGE_CHANCE: 0, // 0-10
-    //     settings_FIREPOWER: 0, // 0-10
-    //     settings_SHIELDS: 0, //0-4
-    // };
-
-    // player2 = player2 || {
-    //     nickname: 'Balanced',
-    //     settings_DEFENSE_THICKNESS: 0, // 0-10
-    //     settings_DEFENSE_WIDTH: 2, // 0-10
-    //     settings_DODGE_CHANCE: 2, // 0-10
-    //     settings_FIREPOWER: 3, // 0-10
-    //     settings_SHIELDS: 1, //0-4
-    // };
-
-    // player3 = player3 || {
-    //     nickname: 'Shieldy',
-    //     settings_DEFENSE_THICKNESS: 0, // 0-10
-    //     settings_DEFENSE_WIDTH: 0, // 0-10
-    //     settings_DODGE_CHANCE: 0, // 0-10
-    //     settings_FIREPOWER: 0, // 0-10
-    //     settings_SHIELDS: 4, //0-4
-    // };
-
-    // player4 = player4 || {
-    //     nickname: 'Dodgy',
-    //     settings_DEFENSE_THICKNESS: 0, // 0-10
-    //     settings_DEFENSE_WIDTH: 0, // 0-10
-    //     settings_DODGE_CHANCE: 10, // 0-10
-    //     settings_FIREPOWER: 0, // 0-10
-    //     settings_SHIELDS: 0, //0-4
-    // };
 
     results = [];
 
