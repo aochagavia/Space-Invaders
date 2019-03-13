@@ -16150,7 +16150,6 @@ document.getElementById("gameContainer").appendChild(app.view);
 let results = [];
 // @ts-ignore
 window["start"] = function (player1, player2, player3, player4) {
-    results = [];
     app.stage.children
         .filter(c => c instanceof _Execut_Game__WEBPACK_IMPORTED_MODULE_0__["Game"])
         .forEach(g => {
@@ -16210,6 +16209,7 @@ window["start"] = function (player1, player2, player3, player4) {
     //     alienMoveDown: 1,
     //     alienFireInterval: 2000,
     // };
+    results = [];
     let games = [
         new _Execut_Game__WEBPACK_IMPORTED_MODULE_0__["Game"](_Execut_Options__WEBPACK_IMPORTED_MODULE_1__["Options"].fromSettings(player1)),
         new _Execut_Game__WEBPACK_IMPORTED_MODULE_0__["Game"](_Execut_Options__WEBPACK_IMPORTED_MODULE_1__["Options"].fromSettings(player2)),
