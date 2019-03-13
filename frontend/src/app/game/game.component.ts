@@ -46,7 +46,7 @@ export class GameComponent implements OnInit, OnDestroy, AfterViewInit {
 
   scheduleDemoPlay() {
     // Start a demo play after 30 seconds of inactivity
-    timer(30_000).pipe(takeUntil(this.destroyed$)).subscribe(() => {
+    timer(15_000).pipe(takeUntil(this.destroyed$)).subscribe(() => {
       if (!this.playing && !this.demoPlaying) {
         this.demoPlaying = true;
 
