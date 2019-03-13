@@ -46,55 +46,39 @@ window["start"] = function(player1: PlayerSettings, player2: PlayerSettings, pla
     }
 
     // player1 = player1 || {
-    //     playerName: 'Speedy',
-    //     shipSpeed: 30,
-    //     shipBulletSpeed: 25,
-    //     shipFireInterval: 800,
-    //     shipDodgeChance: 0.3,
-    //     shipShields: 1,
-    //     shieldThickness: 2,
-    //     shieldWidth: 4,
-    //     alienMoveDown: 1,
-    //     alienFireInterval: 2000,
+    //     nickname: 'Defensive',
+    //     settings_DEFENSE_THICKNESS: 0, // 0-10
+    //     settings_DEFENSE_WIDTH: 10, // 0-10
+    //     settings_DODGE_CHANCE: 0, // 0-10
+    //     settings_FIREPOWER: 0, // 0-10
+    //     settings_SHIELDS: 0, //0-4
     // };
-    //
+
     // player2 = player2 || {
-    //     playerName: 'Shooty',
-    //     shipSpeed: 20,
-    //     shipBulletSpeed: 25,
-    //     shipFireInterval: 600,
-    //     shipDodgeChance: 0.3,
-    //     shipShields: 1,
-    //     shieldThickness: 2,
-    //     shieldWidth: 4,
-    //     alienMoveDown: 1,
-    //     alienFireInterval: 2000,
+    //     nickname: 'Balanced',
+    //     settings_DEFENSE_THICKNESS: 0, // 0-10
+    //     settings_DEFENSE_WIDTH: 2, // 0-10
+    //     settings_DODGE_CHANCE: 2, // 0-10
+    //     settings_FIREPOWER: 3, // 0-10
+    //     settings_SHIELDS: 1, //0-4
     // };
-    //
+
     // player3 = player3 || {
-    //     playerName: 'Rockety',
-    //     shipSpeed: 20,
-    //     shipBulletSpeed: 40,
-    //     shipFireInterval: 800,
-    //     shipDodgeChance: 0.3,
-    //     shipShields: 1,
-    //     shieldThickness: 2,
-    //     shieldWidth: 4,
-    //     alienMoveDown: 1,
-    //     alienFireInterval: 2000,
+    //     nickname: 'Shieldy',
+    //     settings_DEFENSE_THICKNESS: 0, // 0-10
+    //     settings_DEFENSE_WIDTH: 0, // 0-10
+    //     settings_DODGE_CHANCE: 0, // 0-10
+    //     settings_FIREPOWER: 0, // 0-10
+    //     settings_SHIELDS: 4, //0-4
     // };
-    //
+
     // player4 = player4 || {
-    //     playerName: 'Dodgy',
-    //     shipSpeed: 20,
-    //     shipBulletSpeed: 25,
-    //     shipFireInterval: 800,
-    //     shipDodgeChance: 0.5,
-    //     shipShields: 1,
-    //     shieldThickness: 2,
-    //     shieldWidth: 4,
-    //     alienMoveDown: 1,
-    //     alienFireInterval: 2000,
+    //     nickname: 'Dodgy',
+    //     settings_DEFENSE_THICKNESS: 0, // 0-10
+    //     settings_DEFENSE_WIDTH: 0, // 0-10
+    //     settings_DODGE_CHANCE: 10, // 0-10
+    //     settings_FIREPOWER: 0, // 0-10
+    //     settings_SHIELDS: 0, //0-4
     // };
 
     results = [];

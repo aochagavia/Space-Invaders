@@ -1,5 +1,4 @@
 export interface PlayerSettings {
-    id: number;
     nickname: string;
     settings_DEFENSE_THICKNESS: number; // 0-10
     settings_DEFENSE_WIDTH: number; // 0-10
