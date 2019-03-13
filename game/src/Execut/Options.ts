@@ -11,7 +11,7 @@ export class Options {
 
             shipBulletSpeed: Math.floor(settings.settings_FIREPOWER * 5 + 5), // 0-10
             shipFireInterval: 3000 - (11 - settings.settings_FIREPOWER) * 150, // 0-10
-            shipDodgeChance: Math.floor(settings.settings_DODGE_CHANGE * 0.05), // 0-10
+            shipDodgeChance: Math.floor(settings.settings_DODGE_CHANCE * 0.05), // 0-10
             shipShields: Math.floor(settings.settings_SHIELDS), // 0-4
             shieldThickness: Math.floor(settings.settings_DEFENSE_THICKNESS), // 0-10
             shieldWidth: Math.floor(settings.settings_DEFENSE_WIDTH), // 0-10

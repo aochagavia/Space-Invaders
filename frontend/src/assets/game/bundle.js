@@ -15739,7 +15739,7 @@ class Options {
             shipSpeed: 15,
             shipBulletSpeed: Math.floor(settings.settings_FIREPOWER * 5 + 5),
             shipFireInterval: 3000 - (11 - settings.settings_FIREPOWER) * 150,
-            shipDodgeChance: Math.floor(settings.settings_DODGE_CHANGE * 0.05),
+            shipDodgeChance: Math.floor(settings.settings_DODGE_CHANCE * 0.05),
             shipShields: Math.floor(settings.settings_SHIELDS),
             shieldThickness: Math.floor(settings.settings_DEFENSE_THICKNESS),
             shieldWidth: Math.floor(settings.settings_DEFENSE_WIDTH),
