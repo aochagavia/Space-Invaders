@@ -100,7 +100,7 @@ export class Game extends AnimatedEntity {
         this.timeLabelText = this.text.addText("TIME", 322, 66.5, TextAlign.LEFT, 0xffffff);
         this.timeText = this.text.addText('', 480 - 28, 66.5, TextAlign.RIGHT, 0x00ffff);
         this.killsLabelText = this.text.addText('KILLS:', 28, 1031, TextAlign.LEFT, 0xff6633);
-        this.killsText = this.text.addText('0x0', 480-28, 1031, TextAlign.RIGHT, 0xff6633);
+        this.killsText = this.text.addText('0', 480-28, 1031, TextAlign.RIGHT, 0xff6633);
 
         this.controller = new Controller(
             this.options,
@@ -171,7 +171,7 @@ export class Game extends AnimatedEntity {
 
     private onAlienDeath(): void {
         this.kills++;
-        this.killsText.update(`0x${this.kills.toString(16)}`);
+        this.killsText.update(`${this.kills}`);
     }
 
     private onPlayerDodge(): void {
@@ -247,11 +247,11 @@ export class Game extends AnimatedEntity {
         }, start + pause);
 
         setTimeout(() => {
-            this.text.addText(`KILLS: 0x${this.kills.toString(16)}`, 240, 540 + textSize / 2 + textSpacing, TextAlign.CENTER, 0xff6633, textSize);
+            this.text.addText(`KILLS: ${this.kills}`, 240, 540 + textSize / 2 + textSpacing, TextAlign.CENTER, 0xff6633, textSize);
         }, start + pause * 2);
 
         setTimeout(() => {
-            const t = this.text.addCenteredText(this.options.playerName, 240, 540, 30, 0xffffff);
+            const t = this.text.addCenteredText(this.options.playerName, 240, 240, 30, 0xffffff);
             t.rotation = -30 * Math.PI / 180;
 
             const minAngle = 0.3;

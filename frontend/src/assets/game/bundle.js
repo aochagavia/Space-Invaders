@@ -15573,7 +15573,7 @@ class Game extends _Entity_AnimatedEntity__WEBPACK_IMPORTED_MODULE_6__["Animated
         this.timeLabelText = this.text.addText("TIME", 322, 66.5, _Text_TextAlign__WEBPACK_IMPORTED_MODULE_8__["TextAlign"].LEFT, 0xffffff);
         this.timeText = this.text.addText('', 480 - 28, 66.5, _Text_TextAlign__WEBPACK_IMPORTED_MODULE_8__["TextAlign"].RIGHT, 0x00ffff);
         this.killsLabelText = this.text.addText('KILLS:', 28, 1031, _Text_TextAlign__WEBPACK_IMPORTED_MODULE_8__["TextAlign"].LEFT, 0xff6633);
-        this.killsText = this.text.addText('0x0', 480 - 28, 1031, _Text_TextAlign__WEBPACK_IMPORTED_MODULE_8__["TextAlign"].RIGHT, 0xff6633);
+        this.killsText = this.text.addText('0', 480 - 28, 1031, _Text_TextAlign__WEBPACK_IMPORTED_MODULE_8__["TextAlign"].RIGHT, 0xff6633);
         this.controller = new _Controller_Controller__WEBPACK_IMPORTED_MODULE_3__["Controller"](this.options, this.ship, this.alienField, this.shields, this.bulletPool);
         this.controller.on("fire", this.onPlayerFire.bind(this));
     }
@@ -15623,7 +15623,7 @@ class Game extends _Entity_AnimatedEntity__WEBPACK_IMPORTED_MODULE_6__["Animated
     }
     onAlienDeath() {
         this.kills++;
-        this.killsText.update(`0x${this.kills.toString(16)}`);
+        this.killsText.update(`${this.kills}`);
     }
     onPlayerDodge() {
         this.text.fadeUp("dodge!", this.ship.x, this.ship.y + 25, 600);
@@ -15689,10 +15689,10 @@ class Game extends _Entity_AnimatedEntity__WEBPACK_IMPORTED_MODULE_6__["Animated
             this.text.addText(Game.formatTime(playTime), 240, 540 - textSize / 2, _Text_TextAlign__WEBPACK_IMPORTED_MODULE_8__["TextAlign"].CENTER, 0x00ffff, textSize);
         }, start + pause);
         setTimeout(() => {
-            this.text.addText(`KILLS: 0x${this.kills.toString(16)}`, 240, 540 + textSize / 2 + textSpacing, _Text_TextAlign__WEBPACK_IMPORTED_MODULE_8__["TextAlign"].CENTER, 0xff6633, textSize);
+            this.text.addText(`KILLS: ${this.kills}`, 240, 540 + textSize / 2 + textSpacing, _Text_TextAlign__WEBPACK_IMPORTED_MODULE_8__["TextAlign"].CENTER, 0xff6633, textSize);
         }, start + pause * 2);
         setTimeout(() => {
-            const t = this.text.addCenteredText(this.options.playerName, 240, 540, 30, 0xffffff);
+            const t = this.text.addCenteredText(this.options.playerName, 240, 240, 30, 0xffffff);
             t.rotation = -30 * Math.PI / 180;
             const minAngle = 0.3;
             const maxAngle = 1.1525719972156676; // Math.atan(1080 / 480)
@@ -16158,38 +16158,38 @@ window["start"] = function (player1, player2, player3, player4) {
     for (let i = app.stage.children.length - 1; i >= 0; i--) {
         app.stage.removeChild(app.stage.children[i]);
     }
-    // player1 = player1 || {
-    //     nickname: 'Defensive',
-    //     settings_DEFENSE_THICKNESS: 0, // 0-10
-    //     settings_DEFENSE_WIDTH: 10, // 0-10
-    //     settings_DODGE_CHANCE: 0, // 0-10
-    //     settings_FIREPOWER: 0, // 0-10
-    //     settings_SHIELDS: 0, //0-4
-    // };
-    // player2 = player2 || {
-    //     nickname: 'Balanced',
-    //     settings_DEFENSE_THICKNESS: 0, // 0-10
-    //     settings_DEFENSE_WIDTH: 2, // 0-10
-    //     settings_DODGE_CHANCE: 2, // 0-10
-    //     settings_FIREPOWER: 3, // 0-10
-    //     settings_SHIELDS: 1, //0-4
-    // };
-    // player3 = player3 || {
-    //     nickname: 'Shieldy',
-    //     settings_DEFENSE_THICKNESS: 0, // 0-10
-    //     settings_DEFENSE_WIDTH: 0, // 0-10
-    //     settings_DODGE_CHANCE: 0, // 0-10
-    //     settings_FIREPOWER: 0, // 0-10
-    //     settings_SHIELDS: 4, //0-4
-    // };
-    // player4 = player4 || {
-    //     nickname: 'Dodgy',
-    //     settings_DEFENSE_THICKNESS: 0, // 0-10
-    //     settings_DEFENSE_WIDTH: 0, // 0-10
-    //     settings_DODGE_CHANCE: 10, // 0-10
-    //     settings_FIREPOWER: 0, // 0-10
-    //     settings_SHIELDS: 0, //0-4
-    // };
+    player1 = player1 || {
+        nickname: 'Defensive',
+        settings_DEFENSE_THICKNESS: 0,
+        settings_DEFENSE_WIDTH: 10,
+        settings_DODGE_CHANCE: 0,
+        settings_FIREPOWER: 0,
+        settings_SHIELDS: 0,
+    };
+    player2 = player2 || {
+        nickname: 'Balanced',
+        settings_DEFENSE_THICKNESS: 0,
+        settings_DEFENSE_WIDTH: 2,
+        settings_DODGE_CHANCE: 2,
+        settings_FIREPOWER: 3,
+        settings_SHIELDS: 1,
+    };
+    player3 = player3 || {
+        nickname: 'Shieldy',
+        settings_DEFENSE_THICKNESS: 0,
+        settings_DEFENSE_WIDTH: 0,
+        settings_DODGE_CHANCE: 0,
+        settings_FIREPOWER: 0,
+        settings_SHIELDS: 4,
+    };
+    player4 = player4 || {
+        nickname: 'Dodgy',
+        settings_DEFENSE_THICKNESS: 0,
+        settings_DEFENSE_WIDTH: 0,
+        settings_DODGE_CHANCE: 10,
+        settings_FIREPOWER: 0,
+        settings_SHIELDS: 0,
+    };
     results = [];
     let games = [
         new _Execut_Game__WEBPACK_IMPORTED_MODULE_0__["Game"](_Execut_Options__WEBPACK_IMPORTED_MODULE_1__["Options"].fromSettings(player1)),
