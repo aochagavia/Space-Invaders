@@ -89,10 +89,10 @@ window["start"] = function(player1: PlayerSettings, player2: PlayerSettings, pla
     results = [];
 
     let games = [
-        new Game(Options.fromSettings(player1)),
-        new Game(Options.fromSettings(player2)),
-        new Game(Options.fromSettings(player3)),
-        new Game(Options.fromSettings(player4)),
+        new Game(player1),
+        new Game(player2),
+        new Game(player3),
+        new Game(player4),
     ];
 
     games.forEach((g, i) => {

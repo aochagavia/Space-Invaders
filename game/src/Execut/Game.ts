@@ -13,9 +13,11 @@ import {TextAlign} from "./Text/TextAlign";
 import {TweenLite} from "gsap/all";
 import Graphics = PIXI.Graphics;
 import Sprite = PIXI.Sprite;
+import { PlayerSettings } from "./PlayerSettings";
 
 export class Game extends AnimatedEntity {
     private readonly options: Options;
+    private readonly originalSettings: PlayerSettings;
 
     private alienField: AlienField;
     private shields: Shields;
@@ -39,9 +41,10 @@ export class Game extends AnimatedEntity {
 
     private controller: Controller;
 
-    constructor(options: Options) {
+    constructor(originalSettings: PlayerSettings) {
         super();
-        this.options = options;
+        this.options = Options.fromSettings(originalSettings);
+        this.originalSettings = originalSettings;
 
         // fixme: mask here and on bullets makes bullets disappear?
         // this.mask = new Graphics();
@@ -184,29 +187,26 @@ export class Game extends AnimatedEntity {
 
     private win(): void {
         console.log("Player wins!");
-        this.controller.gameOver();
         this.text.explode("You win!");
-        this.stop();
-        this.showEndState(true);
-        this.emit("end", {
-            nickname: this.options.playerName,
-            won: true,
-            kills: this.kills,
-            time: (Date.now() - this.startTime) / 1000,
-        });
+        this.endGame(true);
     }
 
     private lose(): void {
         console.log("Player loses :(");
         this.text.explode("You lose!");
+        this.endGame(false);
+    }
+
+    private endGame(won: boolean): void {
         this.controller.gameOver();
         this.stop();
-        this.showEndState(false);
+        this.showEndState(won);
         this.emit("end", {
             nickname: this.options.playerName,
-            won: false,
+            won: won,
             kills: this.kills,
             time: (Date.now() - this.startTime) / 1000,
+            settings: this.originalSettings,
         });
     }
 
