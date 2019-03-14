@@ -120,9 +120,15 @@ export class DashboardComponent implements OnInit, OnDestroy {
     return this.playerTexts[position];
   }
 
-  padKills(num: number) {
+  leftPad2(num: number) {
     var s = "000000000" + num;
     return s.substr(s.length - 2);
   }
 
+  getTime(seconds: number) {
+    let fixedSeconds = parseInt(seconds.toFixed(0));
+    let minutes = Math.floor(fixedSeconds / 60);
+    let realSeconds = fixedSeconds - minutes * 60;
+    return `${this.leftPad2(minutes)}:${this.leftPad2(realSeconds)}`
+  }
 }

@@ -29,10 +29,10 @@
           </div>
           <div class="w-1/2 flex">
             <div class="w-1/2 flex items-center">
-              <span class="mr-1">{{ padKills(player.kills) }}</span>
+              <span class="mr-1">{{ leftPad2(player.kills) }}</span>
               <img src="assets/game/images/alienskull.png" alt="" class="w-6 mr-3 mb-1">
               <span class="text-grey mr-3">in</span>
-              <span class="mr-1">{{ player.time.toFixed(1) }}</span><span class="text-grey-light">s</span>
+              <span class="mr-1">{{ getTime(player.time) }}</span>
             </div>
             <div class="w-1/2 flex items-center">
               <div class="text-sm text-teal-darker speech-bubble p-3 flex items-center w-full">
@@ -48,10 +48,10 @@
           </div>
           <div class="w-1/2 flex items-center">
             <div class="w-1/2 flex items-center">
-              <span class="mr-1">{{ padKills(player.kills) }}</span>
+              <span class="mr-1">{{ leftPad2(player.kills) }}</span>
               <img src="assets/game/images/alienskull.png" alt="" class="w-6 mr-3 mb-1">
               <span class="text-grey mr-3">in</span>
-              <span class="mr-1">{{ player.time.toFixed(1) }}</span><span class="text-grey-light">s</span>
+              <span class="mr-1">{{ getTime(player.time) }}</span>
             </div>
             <div class="w-1/2 text-sm text-teal-darker speech-bubble p-3 flex items-center">
               {{ randomText(i) }}
