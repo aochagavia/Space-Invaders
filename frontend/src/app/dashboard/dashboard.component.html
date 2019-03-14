@@ -10,13 +10,18 @@
 </div>
 <div class="max-w-5xl mx-auto flex mt-12 p-8" *ngIf="dashboardServerOnline">
   <div class="w-3/5">
-    <h1 class="mb-8 flex items-center justify-center">
-      <img src="assets/game/images/alien02.png" alt="" class="mr-3">
-      High Scores
-    </h1>
+    <div class="mb-8">
+      <h1 class="mb-4 flex items-center justify-center">
+        <img src="assets/game/images/alien02.png" alt="" class="mr-3">
+        High Scores
+      </h1>
       <div class="text-center text-grey-dark" *ngIf="finishedPlayers.length === 0">
         Be The First One Yet
       </div>
+      <div class="text-center text-teal" *ngIf="finishedPlayers.length > 0">
+        There are prizes to be won! Awards ceremony at 17:15
+      </div>
+    </div>
     <div class="text-lg">
       <div *ngFor="let player of finishedPlayers; index as i">
         <div class="mb-4 flex" *ngIf="i === 0">
