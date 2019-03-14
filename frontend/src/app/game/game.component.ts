@@ -45,7 +45,7 @@ export class GameComponent implements OnInit, OnDestroy, AfterViewInit {
 
   scheduleDemoPlay() {
     // Start a demo play after some seconds of inactivity
-    timer(15_000).pipe(takeUntil(this.destroyed$)).subscribe(() => {
+    timer(30_000).pipe(takeUntil(this.destroyed$)).subscribe(() => {
       if (!this.playing) {
         this.demoPlaying = true;
 
@@ -109,7 +109,8 @@ export class GameComponent implements OnInit, OnDestroy, AfterViewInit {
       if (this.demoPlaying) {
         // Ignore the result, since it was just a demo round
       } else {
-        this.matchService.sendMatchResult(result);
+        // Wait before sending the match result to the server, to avoid starting the next match too soon
+        window.setTimeout(() => this.matchService.sendMatchResult(result), 15_000);
       }
 
       this.playing = false;

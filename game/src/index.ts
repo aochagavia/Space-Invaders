@@ -128,9 +128,7 @@ window.addEventListener('keydown', evt => {
 function registerGameResult(result: Result): void {
     results.push(result);
     if (results.length == 4) {
-        setTimeout(() => {
-            // @ts-ignore Provided by framework
-            sendMatchResult(results);
-        }, 15000);
+        // @ts-ignore Provided by framework
+        sendMatchResult(results);
     }
 }
