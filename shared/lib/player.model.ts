@@ -3,7 +3,7 @@ export class Player {
     public kills: number;
     public won: boolean;
     public time: number;
-    public settings_DEFENSE_THICKNESS: number; // 0-10
+    public settings_DEFENSE_HEIGHT: number; // 0-10
     public settings_DEFENSE_WIDTH: number; // 0-10
     public settings_DODGE_CHANCE: number; // 0-10
     public settings_FIREPOWER: number; // 0-10

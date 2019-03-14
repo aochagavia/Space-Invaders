@@ -51,7 +51,7 @@ export class GameComponent implements OnInit, OnDestroy, AfterViewInit {
 
         const p1: Partial<Player> = {
           nickname: 'Demo Player 1',
-          settings_DEFENSE_THICKNESS: 2,
+          settings_DEFENSE_HEIGHT: 2,
           settings_DODGE_CHANCE: 2,
           settings_DEFENSE_WIDTH: 2,
           settings_FIREPOWER: 4,
@@ -60,7 +60,7 @@ export class GameComponent implements OnInit, OnDestroy, AfterViewInit {
 
         const p2: Partial<Player> = {
           nickname: 'Demo Player 2',
-          settings_DEFENSE_THICKNESS: 2,
+          settings_DEFENSE_HEIGHT: 2,
           settings_DODGE_CHANCE: 2,
           settings_DEFENSE_WIDTH: 2,
           settings_FIREPOWER: 4,
@@ -69,7 +69,7 @@ export class GameComponent implements OnInit, OnDestroy, AfterViewInit {
 
         const p3: Partial<Player> = {
           nickname: 'Demo Player 3',
-          settings_DEFENSE_THICKNESS: 2,
+          settings_DEFENSE_HEIGHT: 2,
           settings_DODGE_CHANCE: 2,
           settings_DEFENSE_WIDTH: 2,
           settings_FIREPOWER: 4,
@@ -78,7 +78,7 @@ export class GameComponent implements OnInit, OnDestroy, AfterViewInit {
 
         const p4: Partial<Player> = {
           nickname: 'Demo Player 4',
-          settings_DEFENSE_THICKNESS: 2,
+          settings_DEFENSE_HEIGHT: 2,
           settings_DODGE_CHANCE: 2,
           settings_DEFENSE_WIDTH: 2,
           settings_FIREPOWER: 4,

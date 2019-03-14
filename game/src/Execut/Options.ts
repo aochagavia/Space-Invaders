@@ -14,7 +14,7 @@ export class Options {
             // @ts-ignore settings.settings_DODGE_CHANCE is actually a string
             shipDodgeChance: Math.log(parseInt(settings.settings_DODGE_CHANCE) + 1) * 22 * 0.01, // 0-10
             shipShields: Math.floor(settings.settings_SHIELDS), // 0-4
-            shieldThickness: Math.floor(settings.settings_DEFENSE_THICKNESS), // 0-10
+            shieldThickness: Math.floor(settings.settings_DEFENSE_HEIGHT), // 0-10
             shieldWidth: Math.floor(settings.settings_DEFENSE_WIDTH), // 0-10
 
             alienFireInterval: 3000,
