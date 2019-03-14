@@ -39,15 +39,14 @@ export class GameComponent implements OnInit, OnDestroy, AfterViewInit {
         this.matchService.registerMatchServer();
       } else {
         this.serverOnline = false;
-        this.playing = false;
       }
     });
   }
 
   scheduleDemoPlay() {
-    // Start a demo play after 30 seconds of inactivity
+    // Start a demo play after some seconds of inactivity
     timer(15_000).pipe(takeUntil(this.destroyed$)).subscribe(() => {
-      if (!this.playing && !this.demoPlaying) {
+      if (!this.playing) {
         this.demoPlaying = true;
 
         const p1: Partial<Player> = {

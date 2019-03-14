@@ -15739,7 +15739,8 @@ class Options {
             shipSpeed: 15,
             shipBulletSpeed: Math.floor(settings.settings_FIREPOWER * 3 + 15),
             shipFireInterval: 2250 - settings.settings_FIREPOWER * 150,
-            shipDodgeChance: Math.log(Math.floor(settings.settings_DODGE_CHANCE) + 1) * 22 * 0.01,
+            // @ts-ignore settings.settings_DODGE_CHANCE is actually a string
+            shipDodgeChance: Math.log(parseInt(settings.settings_DODGE_CHANCE) + 1) * 22 * 0.01,
             shipShields: Math.floor(settings.settings_SHIELDS),
             shieldThickness: Math.floor(settings.settings_DEFENSE_THICKNESS),
             shieldWidth: Math.floor(settings.settings_DEFENSE_WIDTH),
@@ -16151,12 +16152,12 @@ let results = [];
 // @ts-ignore
 window["devStart"] = () => {
     const player1 = {
-        nickname: 'Defensive',
-        settings_DEFENSE_THICKNESS: 0,
-        settings_DEFENSE_WIDTH: 10,
+        nickname: 'Powerful Grievous',
+        settings_DEFENSE_THICKNESS: 1,
+        settings_DEFENSE_WIDTH: 8,
         settings_DODGE_CHANCE: 0,
         settings_FIREPOWER: 0,
-        settings_SHIELDS: 0,
+        settings_SHIELDS: 1,
     };
     const player2 = {
         nickname: 'Balanced',
@@ -16188,9 +16189,9 @@ window["devStart"] = () => {
 // @ts-ignore
 window["start"] = function (player1, player2, player3, player4) {
     app.stage.children
-        .filter(c => c instanceof _Execut_Game__WEBPACK_IMPORTED_MODULE_0__["Game"])
         .forEach(g => {
-        g.stop();
+        if (g instanceof _Execut_Game__WEBPACK_IMPORTED_MODULE_0__["Game"])
+            g.stop();
     });
     for (let i = app.stage.children.length - 1; i >= 0; i--) {
         app.stage.removeChild(app.stage.children[i]);

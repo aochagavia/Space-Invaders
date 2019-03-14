@@ -36,12 +36,12 @@ let results: Array<Result> = [];
 // @ts-ignore
 window["devStart"] = () => {
     const player1 = {
-        nickname: 'Defensive',
-        settings_DEFENSE_THICKNESS: 0, // 0-10
-        settings_DEFENSE_WIDTH: 10, // 0-10
+        nickname: 'Powerful Grievous',
+        settings_DEFENSE_THICKNESS: 1, // 0-10
+        settings_DEFENSE_WIDTH: 8, // 0-10
         settings_DODGE_CHANCE: 0, // 0-10
         settings_FIREPOWER: 0, // 0-10
-        settings_SHIELDS: 0, //0-4
+        settings_SHIELDS: 1, //0-4
     };
 
     const player2 = {
@@ -78,9 +78,8 @@ window["devStart"] = () => {
 // @ts-ignore
 window["start"] = function(player1: PlayerSettings, player2: PlayerSettings, player3: PlayerSettings, player4: PlayerSettings) {
     app.stage.children
-        .filter(c => c instanceof Game)
         .forEach(g => {
-            (g as Game).stop();
+            if (g instanceof Game) g.stop();
         });
 
     for (let i = app.stage.children.length - 1; i >= 0; i--) {
