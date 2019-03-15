@@ -121,8 +121,6 @@ export class Game extends AnimatedEntity {
         super.start();
 
         this.startTime = Date.now();
-
-        this.text.explode("Start!", 240, 540,2350, 120);
     }
 
     public stop(): void {

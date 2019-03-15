@@ -3,6 +3,8 @@ import {Game} from "./Execut/Game";
 import {Options} from "./Execut/Options";
 import {Result} from "./Execut/Result";
 import {PlayerSettings} from "./Execut/PlayerSettings";
+import Container = PIXI.Container;
+import {Countdown} from "./Execut/Countdown";
 
 PIXI.loader
     .add([
@@ -26,6 +28,11 @@ PIXI.loader
     ]);
 
 let app = new Application(1920, 1080);
+let gamesContainer = new Container();
+let countDown = new Countdown();
+app.stage.addChild(gamesContainer);
+app.stage.addChild(countDown);
+
 // app.stage.scale = new Point(0.75, 0.75);
 
 // @ts-ignore We know it's not null
@@ -77,13 +84,13 @@ window["devStart"] = () => {
 
 // @ts-ignore
 window["start"] = function(player1: PlayerSettings, player2: PlayerSettings, player3: PlayerSettings, player4: PlayerSettings) {
-    app.stage.children
+    gamesContainer.children
         .forEach(g => {
             if (g instanceof Game) g.stop();
         });
 
-    for (let i = app.stage.children.length - 1; i >= 0; i--) {
-        app.stage.removeChild(app.stage.children[i]);
+    for (let i = gamesContainer.children.length - 1; i >= 0; i--) {
+        gamesContainer.removeChild(gamesContainer.children[i]);
     }
 
     results = [];
@@ -97,16 +104,17 @@ window["start"] = function(player1: PlayerSettings, player2: PlayerSettings, pla
 
     games.forEach((g, i) => {
         g.x = i * 480;
-        app.stage.addChild(g);
+        gamesContainer.addChild(g);
         g.on("end", registerGameResult)
     });
 
     PIXI.loader
         .load(() => {
             games.forEach(g => g.preloadFinished());
+            countDown.countDown();
             setTimeout(() => {
                 games.forEach(g => g.start());
-            }, 1000);
+            }, 3000);
         });
 };
 

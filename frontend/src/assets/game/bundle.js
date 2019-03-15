@@ -14728,6 +14728,47 @@ class ShipState {
 
 /***/ }),
 
+/***/ "./src/Execut/Countdown.ts":
+/*!*********************************!*\
+  !*** ./src/Execut/Countdown.ts ***!
+  \*********************************/
+/*! exports provided: Countdown */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Countdown", function() { return Countdown; });
+/* harmony import */ var _Text_TextDisplay__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Text/TextDisplay */ "./src/Execut/Text/TextDisplay.ts");
+/* harmony import */ var _Text_Direction__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Text/Direction */ "./src/Execut/Text/Direction.ts");
+var Container = PIXI.Container;
+
+
+class Countdown extends Container {
+    constructor() {
+        super();
+        this.text = new _Text_TextDisplay__WEBPACK_IMPORTED_MODULE_0__["TextDisplay"]();
+        this.addChild(this.text);
+    }
+    countDown() {
+        const x = 960;
+        const y = 540;
+        const size = 500;
+        this.text.explode('3', x, y, 1000, size, _Text_Direction__WEBPACK_IMPORTED_MODULE_1__["Direction"].RIGHT);
+        setTimeout(() => {
+            this.text.explode('2', x, y, 1000, size, _Text_Direction__WEBPACK_IMPORTED_MODULE_1__["Direction"].LEFT);
+        }, 1000);
+        setTimeout(() => {
+            this.text.explode('1', x, y, 1000, size, _Text_Direction__WEBPACK_IMPORTED_MODULE_1__["Direction"].RIGHT);
+        }, 2000);
+        setTimeout(() => {
+            this.text.explode('START', x, y, 1000, size, _Text_Direction__WEBPACK_IMPORTED_MODULE_1__["Direction"].LEFT);
+        }, 3000);
+    }
+}
+
+
+/***/ }),
+
 /***/ "./src/Execut/Entity/Alien/Alien.ts":
 /*!******************************************!*\
   !*** ./src/Execut/Entity/Alien/Alien.ts ***!
@@ -15584,7 +15625,6 @@ class Game extends _Entity_AnimatedEntity__WEBPACK_IMPORTED_MODULE_7__["Animated
         this.controller.start();
         super.start();
         this.startTime = Date.now();
-        this.text.explode("Start!", 240, 540, 2350, 120);
     }
     stop() {
         this.controller.stop();
@@ -15856,6 +15896,26 @@ class CenteredText extends _SimpleText__WEBPACK_IMPORTED_MODULE_0__["SimpleText"
 
 /***/ }),
 
+/***/ "./src/Execut/Text/Direction.ts":
+/*!**************************************!*\
+  !*** ./src/Execut/Text/Direction.ts ***!
+  \**************************************/
+/*! exports provided: Direction */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Direction", function() { return Direction; });
+var Direction;
+(function (Direction) {
+    Direction[Direction["LEFT"] = 0] = "LEFT";
+    Direction[Direction["RIGHT"] = 1] = "RIGHT";
+    Direction[Direction["RANDOM"] = 2] = "RANDOM";
+})(Direction || (Direction = {}));
+
+
+/***/ }),
+
 /***/ "./src/Execut/Text/ExplodingText.ts":
 /*!******************************************!*\
   !*** ./src/Execut/Text/ExplodingText.ts ***!
@@ -15868,16 +15928,23 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ExplodingText", function() { return ExplodingText; });
 /* harmony import */ var _CenteredText__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./CenteredText */ "./src/Execut/Text/CenteredText.ts");
 /* harmony import */ var gsap_all__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! gsap/all */ "./node_modules/gsap/all.js");
+/* harmony import */ var _Direction__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Direction */ "./src/Execut/Text/Direction.ts");
 
-var Point = PIXI.Point;
 // @ts-ignore IJ cannot find file but it's there
 
+
+var Point = PIXI.Point;
 class ExplodingText extends _CenteredText__WEBPACK_IMPORTED_MODULE_0__["CenteredText"] {
-    constructor(pixiText, duration = 1000) {
+    constructor(pixiText, duration = 1000, rotation = _Direction__WEBPACK_IMPORTED_MODULE_2__["Direction"].RANDOM) {
         super(pixiText);
         this.scale = new Point(0.5, 0.5);
-        this.rotation = (2 + Math.random() * 4) * Math.PI / 180;
-        gsap_all__WEBPACK_IMPORTED_MODULE_1__["TweenLite"].to(this, duration / 1000, { pixi: { scaleX: 1, scaleY: 1, rotation: -2 - Math.random() * 4 } });
+        let rotationStart = 2 + Math.random() * 4;
+        let rotationEnd = -2 - Math.random() * 4;
+        if (rotation == _Direction__WEBPACK_IMPORTED_MODULE_2__["Direction"].RIGHT || (rotation == _Direction__WEBPACK_IMPORTED_MODULE_2__["Direction"].RANDOM && Math.random() < 0.5)) {
+            [rotationStart, rotationEnd] = [rotationEnd, rotationStart];
+        }
+        this.rotation = rotationStart * Math.PI / 180;
+        gsap_all__WEBPACK_IMPORTED_MODULE_1__["TweenLite"].to(this, duration / 1000, { pixi: { scaleX: 1, scaleY: 1, rotation: rotationEnd } });
         gsap_all__WEBPACK_IMPORTED_MODULE_1__["TweenLite"].to(this, duration / 2000, { pixi: { alpha: 0 }, delay: duration / 2000 });
     }
 }
@@ -15976,7 +16043,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _AlignedText__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./AlignedText */ "./src/Execut/Text/AlignedText.ts");
 /* harmony import */ var _FadeingUpText__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./FadeingUpText */ "./src/Execut/Text/FadeingUpText.ts");
 /* harmony import */ var _CenteredText__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./CenteredText */ "./src/Execut/Text/CenteredText.ts");
+/* harmony import */ var _Direction__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./Direction */ "./src/Execut/Text/Direction.ts");
 var Container = PIXI.Container;
+
 
 
 
@@ -16045,13 +16114,13 @@ class TextDisplay extends Container {
         return centeredText;
     }
     // animate and random colours and other fun stuff!
-    explode(text, x = 240, y = 540, duration = 1000, fontSize = 80) {
+    explode(text, x = 240, y = 540, duration = 1000, fontSize = 80, rotation = _Direction__WEBPACK_IMPORTED_MODULE_6__["Direction"].RANDOM) {
         let style = new PIXI.TextStyle({
             fontFamily: "si",
             fontSize: fontSize,
             fill: this.colors[Math.floor(Math.random() * this.colors.length)],
         });
-        let explodingText = new _ExplodingText__WEBPACK_IMPORTED_MODULE_1__["ExplodingText"](new PIXI.Text(text, style), duration);
+        let explodingText = new _ExplodingText__WEBPACK_IMPORTED_MODULE_1__["ExplodingText"](new PIXI.Text(text, style), duration, rotation);
         explodingText.x = x;
         explodingText.y = y;
         this.addChild(explodingText);
@@ -16119,7 +16188,10 @@ class Util {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Execut_Game__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Execut/Game */ "./src/Execut/Game.ts");
+/* harmony import */ var _Execut_Countdown__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Execut/Countdown */ "./src/Execut/Countdown.ts");
 var Application = PIXI.Application;
+
+var Container = PIXI.Container;
 
 PIXI.loader
     .add([
@@ -16142,6 +16214,10 @@ PIXI.loader
     "./assets/game/images/ship_shield.png",
 ]);
 let app = new Application(1920, 1080);
+let gamesContainer = new Container();
+let countDown = new _Execut_Countdown__WEBPACK_IMPORTED_MODULE_1__["Countdown"]();
+app.stage.addChild(gamesContainer);
+app.stage.addChild(countDown);
 // app.stage.scale = new Point(0.75, 0.75);
 // @ts-ignore We know it's not null
 document.getElementById("gameContainer").appendChild(app.view);
@@ -16185,13 +16261,13 @@ window["devStart"] = () => {
 };
 // @ts-ignore
 window["start"] = function (player1, player2, player3, player4) {
-    app.stage.children
+    gamesContainer.children
         .forEach(g => {
         if (g instanceof _Execut_Game__WEBPACK_IMPORTED_MODULE_0__["Game"])
             g.stop();
     });
-    for (let i = app.stage.children.length - 1; i >= 0; i--) {
-        app.stage.removeChild(app.stage.children[i]);
+    for (let i = gamesContainer.children.length - 1; i >= 0; i--) {
+        gamesContainer.removeChild(gamesContainer.children[i]);
     }
     results = [];
     let games = [
@@ -16202,15 +16278,16 @@ window["start"] = function (player1, player2, player3, player4) {
     ];
     games.forEach((g, i) => {
         g.x = i * 480;
-        app.stage.addChild(g);
+        gamesContainer.addChild(g);
         g.on("end", registerGameResult);
     });
     PIXI.loader
         .load(() => {
         games.forEach(g => g.preloadFinished());
+        countDown.countDown();
         setTimeout(() => {
             games.forEach(g => g.start());
-        }, 1000);
+        }, 3000);
     });
 };
 window.addEventListener('keydown', evt => {
