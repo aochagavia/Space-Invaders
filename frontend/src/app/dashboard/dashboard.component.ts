@@ -15,6 +15,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
   playingPlayers: Player[] = [];
   waitingPlayers: Player[] = [];
   finishedPlayers: Player[] = [];
+  losers: Player[] = [];
+  totalPlayers: number = 0;
   matchServerOnline = false;
   dashboardServerOnline = false;
 
@@ -27,6 +29,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
       this.waitingPlayers = dashboard.waiting;
       this.finishedPlayers = dashboard.leaderboard;
       this.playingPlayers = dashboard.playing;
+      this.losers = dashboard.loserboard;
+      this.totalPlayers = dashboard.totalPlayers;
       this.matchServerOnline = dashboard.matchServerOnline;
       this.dashboardServerOnline = true;
     });

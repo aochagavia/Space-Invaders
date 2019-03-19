@@ -64,6 +64,28 @@
           </div>
         </div>
       </div>
+      <div class="mb-12 text-grey">
+        ...
+      </div>
+      <div *ngFor="let player of losers; index as i">
+        <div class="mb-4 flex text-xl">
+          <div class="w-1/2">
+            <span>{{ totalPlayers - losers.length + i }}.</span>
+            {{ player.nickname }}
+          </div>
+          <div class="w-1/2 flex items-center">
+            <div class="w-1/2 flex items-center">
+              <span class="mr-1">{{ leftPad2(player.kills) }}</span>
+              <img src="assets/game/images/alienskull.png" alt="" class="w-6 mr-3 mb-1">
+              <span class="text-grey mr-3">in</span>
+              <span class="mr-1">{{ getTime(player.time) }}</span>
+            </div>
+            <div class="w-1/2 text-sm text-teal-darker speech-bubble p-3 flex items-center">
+              {{ randomText(losers.length + i) }}
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
   <div class="w-2/5">

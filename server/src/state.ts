@@ -3,7 +3,8 @@ import { Player } from 'shared/lib/player.model';
 import { Socket } from 'socket.io';
 import storage from 'node-persist';
 
-const LEADERBOARD_LENGTH = 20;
+const LEADERBOARD_LENGTH = 10;
+const LOSERBOARD_LENGTH = 3;
 const PLAYERS_PER_MATCH = 4;
 
 export class State {
@@ -14,6 +15,8 @@ export class State {
 
     // A cache of the leaderboard to avoid recalculating it every time
     private leaderboard: Player[] = [];
+    private loserboard: Player[] = [];
+    private totalPlayers: number = 0;
 
     get matchServerOnline(): boolean {
         return this.matchServerSocket !== undefined;
@@ -29,7 +32,9 @@ export class State {
             state.waiting = obj.waiting;
             state.playing = obj.playing;
             state.finished = obj.finished;
-            state.leaderboard = obj.leaderboard;
+
+            // Evil hack to recalculate cached data
+            state.matchFinished([]);
 
             console.log('Players waiting:', state.waiting.length);
             console.log('Players playing:', state.playing.length);
@@ -50,7 +55,6 @@ export class State {
         copy.waiting = this.waiting;
         copy.playing = this.playing;
         copy.finished = this.finished;
-        copy.leaderboard = this.leaderboard;
 
         await storage.setItem('state', copy);
 
@@ -106,8 +110,7 @@ export class State {
 
     matchFinished(players: Player[]) {
         this.playing = [];
-
-        this.leaderboard = this.leaderboard
+        this.finished = this.finished
             .concat(players)
             .sort((p1, p2) => {
                 if (p1.kills > p2.kills) return -1;
@@ -118,13 +121,18 @@ export class State {
                 if (p1.won) return p1.time < p2.time ? -1 : 1;
                 else return p1.time > p2.time ? -1 : 1;
             })
-            .slice(0, LEADERBOARD_LENGTH);
+        
+        this.leaderboard = this.finished.slice(0, LEADERBOARD_LENGTH);
+        
+        const loserboardStart = Math.max(0, this.finished.length - LOSERBOARD_LENGTH);
+        this.loserboard = this.finished.slice(loserboardStart);
 
-        this.finished = this.finished.concat(players);
+        this.totalPlayers = this.finished.length;
+
         this.makeSnapshot();
     }
 
     asDashboard(): Dashboard {
-        return new Dashboard(this.waiting, this.playing, this.leaderboard, this.matchServerOnline);
+        return new Dashboard(this.waiting, this.playing, this.leaderboard, this.loserboard, this.totalPlayers, this.matchServerOnline);
     }
 }
