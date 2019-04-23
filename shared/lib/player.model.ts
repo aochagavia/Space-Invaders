@@ -10,12 +10,3 @@ export class Player {
     public settings_SHIELDS: number; //0-4
 }
 
-export class PlayerSettings {
-    constructor(
-        public shipShields: number,
-        public firePower: number,
-        public dodgeChance: number,
-        public defenseThickness: number,
-        public defenseWidth: number,
-    ) {}
-}
