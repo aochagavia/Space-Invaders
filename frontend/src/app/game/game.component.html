@@ -1,4 +1,4 @@
-<div [hidden]="!serverOnline || !playing">
+<div [hidden]="!serverOnline">
   <style type="text/css">
     @font-face {
       font-family: "si";
@@ -7,9 +7,6 @@
   </style>
   <div style="font-family: 'si'; height: 0;">&nbsp;<!-- force browser to load font --></div>
   <div id="gameContainer"></div>
-</div>
-<div [hidden]="!serverOnline || playing">
-  Waiting for players
 </div>
 <div [hidden]="serverOnline">
   Connection lost, trying to reconnect

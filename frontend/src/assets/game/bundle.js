@@ -14728,6 +14728,47 @@ class ShipState {
 
 /***/ }),
 
+/***/ "./src/Execut/Countdown.ts":
+/*!*********************************!*\
+  !*** ./src/Execut/Countdown.ts ***!
+  \*********************************/
+/*! exports provided: Countdown */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Countdown", function() { return Countdown; });
+/* harmony import */ var _Text_TextDisplay__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Text/TextDisplay */ "./src/Execut/Text/TextDisplay.ts");
+/* harmony import */ var _Text_Direction__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Text/Direction */ "./src/Execut/Text/Direction.ts");
+var Container = PIXI.Container;
+
+
+class Countdown extends Container {
+    constructor() {
+        super();
+        this.text = new _Text_TextDisplay__WEBPACK_IMPORTED_MODULE_0__["TextDisplay"]();
+        this.addChild(this.text);
+    }
+    countDown() {
+        const x = 960;
+        const y = 540;
+        const size = 500;
+        this.text.explode('3', x, y, 1000, size, _Text_Direction__WEBPACK_IMPORTED_MODULE_1__["Direction"].RIGHT);
+        setTimeout(() => {
+            this.text.explode('2', x, y, 1000, size, _Text_Direction__WEBPACK_IMPORTED_MODULE_1__["Direction"].LEFT);
+        }, 1000);
+        setTimeout(() => {
+            this.text.explode('1', x, y, 1000, size, _Text_Direction__WEBPACK_IMPORTED_MODULE_1__["Direction"].RIGHT);
+        }, 2000);
+        setTimeout(() => {
+            this.text.explode('START', x, y, 1000, size, _Text_Direction__WEBPACK_IMPORTED_MODULE_1__["Direction"].LEFT);
+        }, 3000);
+    }
+}
+
+
+/***/ }),
+
 /***/ "./src/Execut/Entity/Alien/Alien.ts":
 /*!******************************************!*\
   !*** ./src/Execut/Entity/Alien/Alien.ts ***!
@@ -15498,16 +15539,18 @@ class Explosion extends Container {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Game", function() { return Game; });
-/* harmony import */ var _Background__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Background */ "./src/Execut/Background.ts");
-/* harmony import */ var _Entity_Alien_AlienField__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Entity/Alien/AlienField */ "./src/Execut/Entity/Alien/AlienField.ts");
-/* harmony import */ var _Entity_Bullet_BulletPool__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Entity/Bullet/BulletPool */ "./src/Execut/Entity/Bullet/BulletPool.ts");
-/* harmony import */ var _Controller_Controller__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Controller/Controller */ "./src/Execut/Controller/Controller.ts");
-/* harmony import */ var _Entity_Shield_Shields__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./Entity/Shield/Shields */ "./src/Execut/Entity/Shield/Shields.ts");
-/* harmony import */ var _Entity_Ship_Ship__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./Entity/Ship/Ship */ "./src/Execut/Entity/Ship/Ship.ts");
-/* harmony import */ var _Entity_AnimatedEntity__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./Entity/AnimatedEntity */ "./src/Execut/Entity/AnimatedEntity.ts");
-/* harmony import */ var _Text_TextDisplay__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./Text/TextDisplay */ "./src/Execut/Text/TextDisplay.ts");
-/* harmony import */ var _Text_TextAlign__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./Text/TextAlign */ "./src/Execut/Text/TextAlign.ts");
-/* harmony import */ var gsap_all__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! gsap/all */ "./node_modules/gsap/all.js");
+/* harmony import */ var _Options__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Options */ "./src/Execut/Options.ts");
+/* harmony import */ var _Background__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Background */ "./src/Execut/Background.ts");
+/* harmony import */ var _Entity_Alien_AlienField__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Entity/Alien/AlienField */ "./src/Execut/Entity/Alien/AlienField.ts");
+/* harmony import */ var _Entity_Bullet_BulletPool__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Entity/Bullet/BulletPool */ "./src/Execut/Entity/Bullet/BulletPool.ts");
+/* harmony import */ var _Controller_Controller__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./Controller/Controller */ "./src/Execut/Controller/Controller.ts");
+/* harmony import */ var _Entity_Shield_Shields__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./Entity/Shield/Shields */ "./src/Execut/Entity/Shield/Shields.ts");
+/* harmony import */ var _Entity_Ship_Ship__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./Entity/Ship/Ship */ "./src/Execut/Entity/Ship/Ship.ts");
+/* harmony import */ var _Entity_AnimatedEntity__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./Entity/AnimatedEntity */ "./src/Execut/Entity/AnimatedEntity.ts");
+/* harmony import */ var _Text_TextDisplay__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./Text/TextDisplay */ "./src/Execut/Text/TextDisplay.ts");
+/* harmony import */ var _Text_TextAlign__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./Text/TextAlign */ "./src/Execut/Text/TextAlign.ts");
+/* harmony import */ var gsap_all__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! gsap/all */ "./node_modules/gsap/all.js");
+
 
 
 
@@ -15521,34 +15564,35 @@ __webpack_require__.r(__webpack_exports__);
 
 var Graphics = PIXI.Graphics;
 var Sprite = PIXI.Sprite;
-class Game extends _Entity_AnimatedEntity__WEBPACK_IMPORTED_MODULE_6__["AnimatedEntity"] {
-    constructor(options) {
+class Game extends _Entity_AnimatedEntity__WEBPACK_IMPORTED_MODULE_7__["AnimatedEntity"] {
+    constructor(originalSettings) {
         super();
         this.startTime = 0;
         this.kills = 0;
-        this.options = options;
+        this.options = _Options__WEBPACK_IMPORTED_MODULE_0__["Options"].fromSettings(originalSettings);
+        this.originalSettings = originalSettings;
         // fixme: mask here and on bullets makes bullets disappear?
         // this.mask = new Graphics();
         // this.mask.drawRect(0, 0, 480, 1080);
         // this.addChild(this.mask);
-        this.addChild(new _Background__WEBPACK_IMPORTED_MODULE_0__["Background"]());
+        this.addChild(new _Background__WEBPACK_IMPORTED_MODULE_1__["Background"]());
     }
     preloadFinished() {
         // There is no way to await a resource texture, so if we for example create a sprite before the resource is
         // loaded, the texture will be undefined and thus invisible. Therefore we start building our display list
         // on .preloadFinished(), which is called after the resource loader has finished loading.
         // TODO: There is probably a better way of doing this
-        this.alienField = new _Entity_Alien_AlienField__WEBPACK_IMPORTED_MODULE_1__["AlienField"](this.options);
+        this.alienField = new _Entity_Alien_AlienField__WEBPACK_IMPORTED_MODULE_2__["AlienField"](this.options);
         this.alienField.y = 160;
         this.alienField.on("fire", this.onAlienFire.bind(this));
         this.alienField.on("alienDeath", this.onAlienDeath.bind(this));
         this.addChild(this.alienField);
-        this.shields = new _Entity_Shield_Shields__WEBPACK_IMPORTED_MODULE_4__["Shields"](this.options);
+        this.shields = new _Entity_Shield_Shields__WEBPACK_IMPORTED_MODULE_5__["Shields"](this.options);
         this.shields.y = 854 - this.options.shieldThickness * 5;
         this.addChild(this.shields);
-        this.bulletPool = new _Entity_Bullet_BulletPool__WEBPACK_IMPORTED_MODULE_2__["BulletPool"]();
+        this.bulletPool = new _Entity_Bullet_BulletPool__WEBPACK_IMPORTED_MODULE_3__["BulletPool"]();
         this.addChild(this.bulletPool);
-        this.ship = new _Entity_Ship_Ship__WEBPACK_IMPORTED_MODULE_5__["Ship"](this.options);
+        this.ship = new _Entity_Ship_Ship__WEBPACK_IMPORTED_MODULE_6__["Ship"](this.options);
         this.ship.y = 1000 - 30;
         this.ship.on("playerDeath", this.onPlayerDeath.bind(this));
         this.ship.on("dodge", this.onPlayerDodge.bind(this));
@@ -15563,25 +15607,24 @@ class Game extends _Entity_AnimatedEntity__WEBPACK_IMPORTED_MODULE_6__["Animated
         this.skull.x = 240 - this.skull.width / 2;
         this.skull.y = 1040 - this.skull.height / 2;
         this.addChild(this.skull);
-        this.text = new _Text_TextDisplay__WEBPACK_IMPORTED_MODULE_7__["TextDisplay"]();
+        this.text = new _Text_TextDisplay__WEBPACK_IMPORTED_MODULE_8__["TextDisplay"]();
         this.addChild(this.text);
         let name = this.options.playerName;
         if (name.length >= 23) {
             name = name.substr(0, 21) + '...';
         }
-        this.nameText = this.text.addText(name, 28, 66.5, _Text_TextAlign__WEBPACK_IMPORTED_MODULE_8__["TextAlign"].LEFT, 0xcc0000);
-        this.timeLabelText = this.text.addText("TIME", 322, 66.5, _Text_TextAlign__WEBPACK_IMPORTED_MODULE_8__["TextAlign"].LEFT, 0xffffff);
-        this.timeText = this.text.addText('', 480 - 28, 66.5, _Text_TextAlign__WEBPACK_IMPORTED_MODULE_8__["TextAlign"].RIGHT, 0x00ffff);
-        this.killsLabelText = this.text.addText('KILLS:', 28, 1031, _Text_TextAlign__WEBPACK_IMPORTED_MODULE_8__["TextAlign"].LEFT, 0xff6633);
-        this.killsText = this.text.addText('0x0', 480 - 28, 1031, _Text_TextAlign__WEBPACK_IMPORTED_MODULE_8__["TextAlign"].RIGHT, 0xff6633);
-        this.controller = new _Controller_Controller__WEBPACK_IMPORTED_MODULE_3__["Controller"](this.options, this.ship, this.alienField, this.shields, this.bulletPool);
+        this.nameText = this.text.addText(name, 28, 66.5, _Text_TextAlign__WEBPACK_IMPORTED_MODULE_9__["TextAlign"].LEFT, 0xcc0000);
+        this.timeLabelText = this.text.addText("TIME", 322, 66.5, _Text_TextAlign__WEBPACK_IMPORTED_MODULE_9__["TextAlign"].LEFT, 0xffffff);
+        this.timeText = this.text.addText('', 480 - 28, 66.5, _Text_TextAlign__WEBPACK_IMPORTED_MODULE_9__["TextAlign"].RIGHT, 0x00ffff);
+        this.killsLabelText = this.text.addText('KILLS:', 28, 1031, _Text_TextAlign__WEBPACK_IMPORTED_MODULE_9__["TextAlign"].LEFT, 0xff6633);
+        this.killsText = this.text.addText('0', 480 - 28, 1031, _Text_TextAlign__WEBPACK_IMPORTED_MODULE_9__["TextAlign"].RIGHT, 0xff6633);
+        this.controller = new _Controller_Controller__WEBPACK_IMPORTED_MODULE_4__["Controller"](this.options, this.ship, this.alienField, this.shields, this.bulletPool);
         this.controller.on("fire", this.onPlayerFire.bind(this));
     }
     start() {
         this.controller.start();
         super.start();
         this.startTime = Date.now();
-        this.text.explode("Start!", 240, 540, 2350, 120);
     }
     stop() {
         this.controller.stop();
@@ -15623,7 +15666,7 @@ class Game extends _Entity_AnimatedEntity__WEBPACK_IMPORTED_MODULE_6__["Animated
     }
     onAlienDeath() {
         this.kills++;
-        this.killsText.update(`0x${this.kills.toString(16)}`);
+        this.killsText.update(`${this.kills}`);
     }
     onPlayerDodge() {
         this.text.fadeUp("dodge!", this.ship.x, this.ship.y + 25, 600);
@@ -15633,33 +15676,29 @@ class Game extends _Entity_AnimatedEntity__WEBPACK_IMPORTED_MODULE_6__["Animated
     }
     win() {
         console.log("Player wins!");
-        this.controller.gameOver();
         this.text.explode("You win!");
-        this.stop();
-        this.showEndState(true);
-        this.emit("end", {
-            name: this.options.playerName,
-            won: true,
-            kills: this.kills,
-            time: (Date.now() - this.startTime) / 1000,
-        });
+        this.endGame(true);
     }
     lose() {
         console.log("Player loses :(");
         this.text.explode("You lose!");
+        this.endGame(false);
+    }
+    endGame(won) {
         this.controller.gameOver();
         this.stop();
-        this.showEndState(false);
+        this.showEndState(won);
         this.emit("end", {
             nickname: this.options.playerName,
-            won: false,
+            won: won,
             kills: this.kills,
             time: (Date.now() - this.startTime) / 1000,
+            settings: this.originalSettings,
         });
     }
     showEndState(won) {
         const fadeOutTime = 500 / 1000;
-        gsap_all__WEBPACK_IMPORTED_MODULE_9__["TweenLite"].to([
+        gsap_all__WEBPACK_IMPORTED_MODULE_10__["TweenLite"].to([
             this.alienField,
             this.shields,
             this.bulletPool,
@@ -15679,20 +15718,20 @@ class Game extends _Entity_AnimatedEntity__WEBPACK_IMPORTED_MODULE_6__["Animated
         const pause = 600;
         setTimeout(() => {
             if (won) {
-                this.text.addText('YOU WON!', 240, 540 - textSize / 2 - textSpacing - textSize, _Text_TextAlign__WEBPACK_IMPORTED_MODULE_8__["TextAlign"].CENTER, 0x66ff33, textSize);
+                this.text.addText('YOU WON!', 240, 540 - textSize / 2 - textSpacing - textSize, _Text_TextAlign__WEBPACK_IMPORTED_MODULE_9__["TextAlign"].CENTER, 0x66ff33, textSize);
             }
             else {
-                this.text.addText('YOU LOST!', 240, 540 - textSize / 2 - textSpacing - textSize, _Text_TextAlign__WEBPACK_IMPORTED_MODULE_8__["TextAlign"].CENTER, 0xcc0000, textSize);
+                this.text.addText('YOU LOST!', 240, 540 - textSize / 2 - textSpacing - textSize, _Text_TextAlign__WEBPACK_IMPORTED_MODULE_9__["TextAlign"].CENTER, 0xcc0000, textSize);
             }
         }, start);
         setTimeout(() => {
-            this.text.addText(Game.formatTime(playTime), 240, 540 - textSize / 2, _Text_TextAlign__WEBPACK_IMPORTED_MODULE_8__["TextAlign"].CENTER, 0x00ffff, textSize);
+            this.text.addText(Game.formatTime(playTime), 240, 540 - textSize / 2, _Text_TextAlign__WEBPACK_IMPORTED_MODULE_9__["TextAlign"].CENTER, 0x00ffff, textSize);
         }, start + pause);
         setTimeout(() => {
-            this.text.addText(`KILLS: 0x${this.kills.toString(16)}`, 240, 540 + textSize / 2 + textSpacing, _Text_TextAlign__WEBPACK_IMPORTED_MODULE_8__["TextAlign"].CENTER, 0xff6633, textSize);
+            this.text.addText(`KILLS: ${this.kills}`, 240, 540 + textSize / 2 + textSpacing, _Text_TextAlign__WEBPACK_IMPORTED_MODULE_9__["TextAlign"].CENTER, 0xff6633, textSize);
         }, start + pause * 2);
         setTimeout(() => {
-            const t = this.text.addCenteredText(this.options.playerName, 240, 540, 30, 0xffffff);
+            const t = this.text.addCenteredText(this.options.playerName, 240, 240, 30, 0xffffff);
             t.rotation = -30 * Math.PI / 180;
             const minAngle = 0.3;
             const maxAngle = 1.1525719972156676; // Math.atan(1080 / 480)
@@ -15733,6 +15772,21 @@ class Options {
         this.alienFireInterval = 3000;
         this.alienMoveDown = 0.1;
     }
+    static fromSettings(settings) {
+        return {
+            playerName: settings.nickname,
+            shipSpeed: 15,
+            shipBulletSpeed: Math.floor(settings.settings_FIREPOWER * 3 + 15),
+            shipFireInterval: 2250 - settings.settings_FIREPOWER * 150,
+            // @ts-ignore settings.settings_DODGE_CHANCE is actually a string
+            shipDodgeChance: Math.log(parseInt(settings.settings_DODGE_CHANCE) + 1) * 22 * 0.01,
+            shipShields: Math.floor(settings.settings_SHIELDS),
+            shieldThickness: Math.floor(settings.settings_DEFENSE_HEIGHT),
+            shieldWidth: Math.floor(settings.settings_DEFENSE_WIDTH),
+            alienFireInterval: 3000,
+            alienMoveDown: 0
+        };
+    }
 }
 
 
@@ -15756,7 +15810,8 @@ class Random {
         this.a = parseInt(seed.toLowerCase().replace(/[^0-9a-z]/g, ''), 36);
     }
     next() {
-        return this.mulberry32();
+        //return this.mulberry32();
+        return Math.random();
     }
     mulberry32() {
         let t = this.a += 0x6D2B79F5;
@@ -15841,6 +15896,26 @@ class CenteredText extends _SimpleText__WEBPACK_IMPORTED_MODULE_0__["SimpleText"
 
 /***/ }),
 
+/***/ "./src/Execut/Text/Direction.ts":
+/*!**************************************!*\
+  !*** ./src/Execut/Text/Direction.ts ***!
+  \**************************************/
+/*! exports provided: Direction */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Direction", function() { return Direction; });
+var Direction;
+(function (Direction) {
+    Direction[Direction["LEFT"] = 0] = "LEFT";
+    Direction[Direction["RIGHT"] = 1] = "RIGHT";
+    Direction[Direction["RANDOM"] = 2] = "RANDOM";
+})(Direction || (Direction = {}));
+
+
+/***/ }),
+
 /***/ "./src/Execut/Text/ExplodingText.ts":
 /*!******************************************!*\
   !*** ./src/Execut/Text/ExplodingText.ts ***!
@@ -15853,16 +15928,23 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ExplodingText", function() { return ExplodingText; });
 /* harmony import */ var _CenteredText__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./CenteredText */ "./src/Execut/Text/CenteredText.ts");
 /* harmony import */ var gsap_all__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! gsap/all */ "./node_modules/gsap/all.js");
+/* harmony import */ var _Direction__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Direction */ "./src/Execut/Text/Direction.ts");
 
-var Point = PIXI.Point;
 // @ts-ignore IJ cannot find file but it's there
 
+
+var Point = PIXI.Point;
 class ExplodingText extends _CenteredText__WEBPACK_IMPORTED_MODULE_0__["CenteredText"] {
-    constructor(pixiText, duration = 1000) {
+    constructor(pixiText, duration = 1000, rotation = _Direction__WEBPACK_IMPORTED_MODULE_2__["Direction"].RANDOM) {
         super(pixiText);
         this.scale = new Point(0.5, 0.5);
-        this.rotation = (2 + Math.random() * 4) * Math.PI / 180;
-        gsap_all__WEBPACK_IMPORTED_MODULE_1__["TweenLite"].to(this, duration / 1000, { pixi: { scaleX: 1, scaleY: 1, rotation: -2 - Math.random() * 4 } });
+        let rotationStart = 2 + Math.random() * 4;
+        let rotationEnd = -2 - Math.random() * 4;
+        if (rotation == _Direction__WEBPACK_IMPORTED_MODULE_2__["Direction"].RIGHT || (rotation == _Direction__WEBPACK_IMPORTED_MODULE_2__["Direction"].RANDOM && Math.random() < 0.5)) {
+            [rotationStart, rotationEnd] = [rotationEnd, rotationStart];
+        }
+        this.rotation = rotationStart * Math.PI / 180;
+        gsap_all__WEBPACK_IMPORTED_MODULE_1__["TweenLite"].to(this, duration / 1000, { pixi: { scaleX: 1, scaleY: 1, rotation: rotationEnd } });
         gsap_all__WEBPACK_IMPORTED_MODULE_1__["TweenLite"].to(this, duration / 2000, { pixi: { alpha: 0 }, delay: duration / 2000 });
     }
 }
@@ -15961,7 +16043,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _AlignedText__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./AlignedText */ "./src/Execut/Text/AlignedText.ts");
 /* harmony import */ var _FadeingUpText__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./FadeingUpText */ "./src/Execut/Text/FadeingUpText.ts");
 /* harmony import */ var _CenteredText__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./CenteredText */ "./src/Execut/Text/CenteredText.ts");
+/* harmony import */ var _Direction__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./Direction */ "./src/Execut/Text/Direction.ts");
 var Container = PIXI.Container;
+
 
 
 
@@ -16030,13 +16114,13 @@ class TextDisplay extends Container {
         return centeredText;
     }
     // animate and random colours and other fun stuff!
-    explode(text, x = 240, y = 540, duration = 1000, fontSize = 80) {
+    explode(text, x = 240, y = 540, duration = 1000, fontSize = 80, rotation = _Direction__WEBPACK_IMPORTED_MODULE_6__["Direction"].RANDOM) {
         let style = new PIXI.TextStyle({
             fontFamily: "si",
             fontSize: fontSize,
             fill: this.colors[Math.floor(Math.random() * this.colors.length)],
         });
-        let explodingText = new _ExplodingText__WEBPACK_IMPORTED_MODULE_1__["ExplodingText"](new PIXI.Text(text, style), duration);
+        let explodingText = new _ExplodingText__WEBPACK_IMPORTED_MODULE_1__["ExplodingText"](new PIXI.Text(text, style), duration, rotation);
         explodingText.x = x;
         explodingText.y = y;
         this.addChild(explodingText);
@@ -16104,9 +16188,10 @@ class Util {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Execut_Game__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Execut/Game */ "./src/Execut/Game.ts");
-/* harmony import */ var _Execut_Options__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Execut/Options */ "./src/Execut/Options.ts");
+/* harmony import */ var _Execut_Countdown__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Execut/Countdown */ "./src/Execut/Countdown.ts");
 var Application = PIXI.Application;
 
+var Container = PIXI.Container;
 
 PIXI.loader
     .add([
@@ -16129,86 +16214,80 @@ PIXI.loader
     "./assets/game/images/ship_shield.png",
 ]);
 let app = new Application(1920, 1080);
+let gamesContainer = new Container();
+let countDown = new _Execut_Countdown__WEBPACK_IMPORTED_MODULE_1__["Countdown"]();
+app.stage.addChild(gamesContainer);
+app.stage.addChild(countDown);
 // app.stage.scale = new Point(0.75, 0.75);
 // @ts-ignore We know it's not null
 document.getElementById("gameContainer").appendChild(app.view);
 let results = [];
 // @ts-ignore
+window["devStart"] = () => {
+    const player1 = {
+        nickname: 'Powerful Grievous',
+        settings_DEFENSE_HEIGHT: 1,
+        settings_DEFENSE_WIDTH: 8,
+        settings_DODGE_CHANCE: 0,
+        settings_FIREPOWER: 0,
+        settings_SHIELDS: 1,
+    };
+    const player2 = {
+        nickname: 'Balanced',
+        settings_DEFENSE_HEIGHT: 0,
+        settings_DEFENSE_WIDTH: 2,
+        settings_DODGE_CHANCE: 2,
+        settings_FIREPOWER: 3,
+        settings_SHIELDS: 1,
+    };
+    const player3 = {
+        nickname: 'Shieldy',
+        settings_DEFENSE_HEIGHT: 0,
+        settings_DEFENSE_WIDTH: 0,
+        settings_DODGE_CHANCE: 0,
+        settings_FIREPOWER: 0,
+        settings_SHIELDS: 4,
+    };
+    const player4 = {
+        nickname: 'Dodgy',
+        settings_DEFENSE_HEIGHT: 0,
+        settings_DEFENSE_WIDTH: 0,
+        settings_DODGE_CHANCE: 10,
+        settings_FIREPOWER: 0,
+        settings_SHIELDS: 0,
+    };
+    // @ts-ignore
+    window["start"](player1, player2, player3, player4);
+};
+// @ts-ignore
 window["start"] = function (player1, player2, player3, player4) {
-    results = [];
-    app.stage.children
-        .filter(c => c instanceof _Execut_Game__WEBPACK_IMPORTED_MODULE_0__["Game"])
+    gamesContainer.children
         .forEach(g => {
-        g.stop();
+        if (g instanceof _Execut_Game__WEBPACK_IMPORTED_MODULE_0__["Game"])
+            g.stop();
     });
-    for (let i = app.stage.children.length - 1; i >= 0; i--) {
-        app.stage.removeChild(app.stage.children[i]);
+    for (let i = gamesContainer.children.length - 1; i >= 0; i--) {
+        gamesContainer.removeChild(gamesContainer.children[i]);
     }
-    player1 = player1 || {
-        playerName: 'Speedy',
-        shipSpeed: 30,
-        shipBulletSpeed: 25,
-        shipFireInterval: 800,
-        shipDodgeChance: 0.3,
-        shipShields: 1,
-        shieldThickness: 2,
-        shieldWidth: 4,
-        alienMoveDown: 1,
-        alienFireInterval: 2000,
-    };
-    player2 = player2 || {
-        playerName: 'Shooty',
-        shipSpeed: 20,
-        shipBulletSpeed: 25,
-        shipFireInterval: 600,
-        shipDodgeChance: 0.3,
-        shipShields: 1,
-        shieldThickness: 2,
-        shieldWidth: 4,
-        alienMoveDown: 1,
-        alienFireInterval: 2000,
-    };
-    player3 = player3 || {
-        playerName: 'Rockety',
-        shipSpeed: 20,
-        shipBulletSpeed: 40,
-        shipFireInterval: 800,
-        shipDodgeChance: 0.3,
-        shipShields: 1,
-        shieldThickness: 2,
-        shieldWidth: 4,
-        alienMoveDown: 1,
-        alienFireInterval: 2000,
-    };
-    player4 = player4 || {
-        playerName: 'Dodgy',
-        shipSpeed: 20,
-        shipBulletSpeed: 25,
-        shipFireInterval: 800,
-        shipDodgeChance: 0.5,
-        shipShields: 1,
-        shieldThickness: 2,
-        shieldWidth: 4,
-        alienMoveDown: 1,
-        alienFireInterval: 2000,
-    };
+    results = [];
     let games = [
-        new _Execut_Game__WEBPACK_IMPORTED_MODULE_0__["Game"](player1 || new _Execut_Options__WEBPACK_IMPORTED_MODULE_1__["Options"]()),
-        new _Execut_Game__WEBPACK_IMPORTED_MODULE_0__["Game"](player2 || new _Execut_Options__WEBPACK_IMPORTED_MODULE_1__["Options"]()),
-        new _Execut_Game__WEBPACK_IMPORTED_MODULE_0__["Game"](player3 || new _Execut_Options__WEBPACK_IMPORTED_MODULE_1__["Options"]()),
-        new _Execut_Game__WEBPACK_IMPORTED_MODULE_0__["Game"](player4 || new _Execut_Options__WEBPACK_IMPORTED_MODULE_1__["Options"]()),
+        new _Execut_Game__WEBPACK_IMPORTED_MODULE_0__["Game"](player1),
+        new _Execut_Game__WEBPACK_IMPORTED_MODULE_0__["Game"](player2),
+        new _Execut_Game__WEBPACK_IMPORTED_MODULE_0__["Game"](player3),
+        new _Execut_Game__WEBPACK_IMPORTED_MODULE_0__["Game"](player4),
     ];
     games.forEach((g, i) => {
         g.x = i * 480;
-        app.stage.addChild(g);
+        gamesContainer.addChild(g);
         g.on("end", registerGameResult);
     });
     PIXI.loader
         .load(() => {
         games.forEach(g => g.preloadFinished());
+        countDown.countDown();
         setTimeout(() => {
             games.forEach(g => g.start());
-        }, 1000);
+        }, 3000);
     });
 };
 window.addEventListener('keydown', evt => {

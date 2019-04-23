@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Subject, timer } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { DashboardService } from '../dashboard.service';
 import { Player } from 'shared/lib/player.model';
@@ -15,6 +15,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
   playingPlayers: Player[] = [];
   waitingPlayers: Player[] = [];
   finishedPlayers: Player[] = [];
+  losers: Player[] = [];
+  totalPlayers: number = 0;
   matchServerOnline = false;
   dashboardServerOnline = false;
 
@@ -27,6 +29,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
       this.waitingPlayers = dashboard.waiting;
       this.finishedPlayers = dashboard.leaderboard;
       this.playingPlayers = dashboard.playing;
+      this.losers = dashboard.loserboard;
+      this.totalPlayers = dashboard.totalPlayers;
       this.matchServerOnline = dashboard.matchServerOnline;
       this.dashboardServerOnline = true;
     });
@@ -47,6 +51,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
     'Nice View Up Here',
     'No. 1',
     'Lonely Here',
+    'Master',
+    'King',
+    'Emperor',
+    'Insanely Good'
   ]
 
   private runnerUpTexts = [
@@ -55,10 +63,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
     'Almost Top',
     'Not Too Bad',
     'Eternal No. 2',
+    'Just Missed It',
+    'I Want Higher',
+    'Starkiller',
+    'Monster'
   ]
 
   private otherTexts = [
-    '',
     'Way To Go',
     'Up!',
     'Made The List',
@@ -84,22 +95,44 @@ export class DashboardComponent implements OnInit, OnDestroy {
     'Star Destroyer',
     'Prospering',
     'Living The Life',
-    'Alert All Commands',
     'Deploy The Fleet',
+    'Solid',
+    'Hyper',
+    'Brutal',
+    'Blaster',
+    'Extreme',
+    'Awesome',
+    'Insane',
+    'Beastly',
+    'Guardian'
   ]
 
+  private playerTexts: string[] = [];
   randomText(position: number) {
-    if (position == 0)
-    {
-      return this.winnerTexts[Math.floor(Math.random() * this.winnerTexts.length)];
+    if (this.playerTexts[position]) {
+      return this.playerTexts[position];
     }
-    
-    if (position == 1)
-    {
-      return this.runnerUpTexts[Math.floor(Math.random() * this.runnerUpTexts.length)];
+
+    if (position === 0) {
+      this.playerTexts[position] = this.winnerTexts[Math.floor(Math.random() * this.winnerTexts.length)];
+    } else if (position === 1) {
+      this.playerTexts[position] = this.runnerUpTexts[Math.floor(Math.random() * this.runnerUpTexts.length)];
+    } else {
+      this.playerTexts[position] = this.otherTexts[Math.floor(Math.random() * this.otherTexts.length)];
     }
-    
-    return this.otherTexts[Math.floor(Math.random() * this.otherTexts.length)];
+
+    return this.playerTexts[position];
   }
 
+  leftPad2(num: number) {
+    var s = "000000000" + num;
+    return s.substr(s.length - 2);
+  }
+
+  getTime(seconds: number) {
+    let fixedSeconds = parseInt(seconds.toFixed(0));
+    let minutes = Math.floor(fixedSeconds / 60);
+    let realSeconds = fixedSeconds - minutes * 60;
+    return `${this.leftPad2(minutes)}:${this.leftPad2(realSeconds)}`
+  }
 }

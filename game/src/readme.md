@@ -16,6 +16,8 @@ Build:
 ```sh
     $ npm run build
 ```
+Copy the `game/dist/assets/game` directory to `frontend/src/assets/` to update the frontend.
+
 
 For now:  
 //todo: update

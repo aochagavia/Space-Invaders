@@ -1,12 +1,13 @@
 export class Player {
-    constructor(
-        public id: number,
-        public nickname: string,
-        public kills: number,
-        public won: boolean,
-        public time: number,
-        public settings: PlayerSettings,
-    ) {}
+    public nickname: string;
+    public kills: number;
+    public won: boolean;
+    public time: number;
+    public settings_DEFENSE_HEIGHT: number; // 0-10
+    public settings_DEFENSE_WIDTH: number; // 0-10
+    public settings_DODGE_CHANCE: number; // 0-10
+    public settings_FIREPOWER: number; // 0-10
+    public settings_SHIELDS: number; //0-4
 }
 
 export class PlayerSettings {

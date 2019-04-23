@@ -2,6 +2,9 @@ import Application = PIXI.Application;
 import {Game} from "./Execut/Game";
 import {Options} from "./Execut/Options";
 import {Result} from "./Execut/Result";
+import {PlayerSettings} from "./Execut/PlayerSettings";
+import Container = PIXI.Container;
+import {Countdown} from "./Execut/Countdown";
 
 PIXI.loader
     .add([
@@ -25,6 +28,11 @@ PIXI.loader
     ]);
 
 let app = new Application(1920, 1080);
+let gamesContainer = new Container();
+let countDown = new Countdown();
+app.stage.addChild(gamesContainer);
+app.stage.addChild(countDown);
+
 // app.stage.scale = new Point(0.75, 0.75);
 
 // @ts-ignore We know it's not null
@@ -33,93 +41,81 @@ document.getElementById("gameContainer").appendChild(app.view);
 let results: Array<Result> = [];
 
 // @ts-ignore
-window["start"] = function(player1: Options, player2: Options, player3: Options, player4: Options) {
-    results = [];
+window["devStart"] = () => {
+    const player1 = {
+        nickname: 'Powerful Grievous',
+        settings_DEFENSE_HEIGHT: 1, // 0-10
+        settings_DEFENSE_WIDTH: 8, // 0-10
+        settings_DODGE_CHANCE: 0, // 0-10
+        settings_FIREPOWER: 0, // 0-10
+        settings_SHIELDS: 1, //0-4
+    };
 
-    app.stage.children
-        .filter(c => c instanceof Game)
+    const player2 = {
+        nickname: 'Balanced',
+        settings_DEFENSE_HEIGHT: 0, // 0-10
+        settings_DEFENSE_WIDTH: 2, // 0-10
+        settings_DODGE_CHANCE: 2, // 0-10
+        settings_FIREPOWER: 3, // 0-10
+        settings_SHIELDS: 1, //0-4
+    };
+
+    const player3 = {
+        nickname: 'Shieldy',
+        settings_DEFENSE_HEIGHT: 0, // 0-10
+        settings_DEFENSE_WIDTH: 0, // 0-10
+        settings_DODGE_CHANCE: 0, // 0-10
+        settings_FIREPOWER: 0, // 0-10
+        settings_SHIELDS: 4, //0-4
+    };
+
+    const player4 = {
+        nickname: 'Dodgy',
+        settings_DEFENSE_HEIGHT: 0, // 0-10
+        settings_DEFENSE_WIDTH: 0, // 0-10
+        settings_DODGE_CHANCE: 10, // 0-10
+        settings_FIREPOWER: 0, // 0-10
+        settings_SHIELDS: 0, //0-4
+    };
+
+    // @ts-ignore
+    window["start"](player1, player2, player3, player4);
+};
+
+// @ts-ignore
+window["start"] = function(player1: PlayerSettings, player2: PlayerSettings, player3: PlayerSettings, player4: PlayerSettings) {
+    gamesContainer.children
         .forEach(g => {
-            (g as Game).stop();
+            if (g instanceof Game) g.stop();
         });
 
-    for (let i = app.stage.children.length - 1; i >= 0; i--) {
-        app.stage.removeChild(app.stage.children[i]);
+    for (let i = gamesContainer.children.length - 1; i >= 0; i--) {
+        gamesContainer.removeChild(gamesContainer.children[i]);
     }
 
-    player1 = player1 || {
-        playerName: 'Speedy',
-        shipSpeed: 30,
-        shipBulletSpeed: 25,
-        shipFireInterval: 800,
-        shipDodgeChance: 0.3,
-        shipShields: 1,
-        shieldThickness: 2,
-        shieldWidth: 4,
-        alienMoveDown: 1,
-        alienFireInterval: 2000,
-    };
-
-    player2 = player2 || {
-        playerName: 'Shooty',
-        shipSpeed: 20,
-        shipBulletSpeed: 25,
-        shipFireInterval: 600,
-        shipDodgeChance: 0.3,
-        shipShields: 1,
-        shieldThickness: 2,
-        shieldWidth: 4,
-        alienMoveDown: 1,
-        alienFireInterval: 2000,
-    };
-
-    player3 = player3 || {
-        playerName: 'Rockety',
-        shipSpeed: 20,
-        shipBulletSpeed: 40,
-        shipFireInterval: 800,
-        shipDodgeChance: 0.3,
-        shipShields: 1,
-        shieldThickness: 2,
-        shieldWidth: 4,
-        alienMoveDown: 1,
-        alienFireInterval: 2000,
-    };
-
-    player4 = player4 || {
-        playerName: 'Dodgy',
-        shipSpeed: 20,
-        shipBulletSpeed: 25,
-        shipFireInterval: 800,
-        shipDodgeChance: 0.5,
-        shipShields: 1,
-        shieldThickness: 2,
-        shieldWidth: 4,
-        alienMoveDown: 1,
-        alienFireInterval: 2000,
-    };
+    results = [];
 
     let games = [
-        new Game(player1 || new Options()),
-        new Game(player2 || new Options()),
-        new Game(player3 || new Options()),
-        new Game(player4 || new Options()),
+        new Game(player1),
+        new Game(player2),
+        new Game(player3),
+        new Game(player4),
     ];
 
     games.forEach((g, i) => {
         g.x = i * 480;
-        app.stage.addChild(g);
+        gamesContainer.addChild(g);
         g.on("end", registerGameResult)
     });
 
     PIXI.loader
         .load(() => {
             games.forEach(g => g.preloadFinished());
+            countDown.countDown();
             setTimeout(() => {
                 games.forEach(g => g.start());
-            }, 1000);
+            }, 3000);
         });
-
-
 };
 
 window.addEventListener('keydown', evt => {

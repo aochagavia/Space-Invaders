@@ -6,6 +6,7 @@ import {TextAlign} from "./TextAlign";
 import {AlignedText} from "./AlignedText";
 import {FadingUpText} from "./FadeingUpText";
 import {CenteredText} from "./CenteredText";
+import {Direction} from "./Direction";
 
 export class TextDisplay extends Container {
 
@@ -84,14 +85,14 @@ export class TextDisplay extends Container {
     }
 
     // animate and random colours and other fun stuff!
-    public explode(text: string, x = 240, y = 540, duration = 1000, fontSize = 80): void {
+    public explode(text: string, x = 240, y = 540, duration = 1000, fontSize = 80, rotation = Direction.RANDOM): void {
         let style = new PIXI.TextStyle({
             fontFamily: "si",
             fontSize: fontSize,
             fill: this.colors[Math.floor(Math.random() * this.colors.length)],
         });
 
-        let explodingText = new ExplodingText(new PIXI.Text(text, style), duration);
+        let explodingText = new ExplodingText(new PIXI.Text(text, style), duration, rotation);
         explodingText.x = x;
         explodingText.y = y;
 

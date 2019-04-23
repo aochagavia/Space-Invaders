@@ -13,9 +13,11 @@ import {TextAlign} from "./Text/TextAlign";
 import {TweenLite} from "gsap/all";
 import Graphics = PIXI.Graphics;
 import Sprite = PIXI.Sprite;
+import { PlayerSettings } from "./PlayerSettings";
 
 export class Game extends AnimatedEntity {
     private readonly options: Options;
+    private readonly originalSettings: PlayerSettings;
 
     private alienField: AlienField;
     private shields: Shields;
@@ -39,9 +41,10 @@ export class Game extends AnimatedEntity {
 
     private controller: Controller;
 
-    constructor(options: Options) {
+    constructor(originalSettings: PlayerSettings) {
         super();
-        this.options = options;
+        this.options = Options.fromSettings(originalSettings);
+        this.originalSettings = originalSettings;
 
         // fixme: mask here and on bullets makes bullets disappear?
         // this.mask = new Graphics();
@@ -100,7 +103,7 @@ export class Game extends AnimatedEntity {
         this.timeLabelText = this.text.addText("TIME", 322, 66.5, TextAlign.LEFT, 0xffffff);
         this.timeText = this.text.addText('', 480 - 28, 66.5, TextAlign.RIGHT, 0x00ffff);
         this.killsLabelText = this.text.addText('KILLS:', 28, 1031, TextAlign.LEFT, 0xff6633);
-        this.killsText = this.text.addText('0x0', 480-28, 1031, TextAlign.RIGHT, 0xff6633);
+        this.killsText = this.text.addText('0', 480-28, 1031, TextAlign.RIGHT, 0xff6633);
 
         this.controller = new Controller(
             this.options,
@@ -118,8 +121,6 @@ export class Game extends AnimatedEntity {
         super.start();
 
         this.startTime = Date.now();
-
-        this.text.explode("Start!", 240, 540,2350, 120);
     }
 
     public stop(): void {
@@ -171,7 +172,7 @@ export class Game extends AnimatedEntity {
 
     private onAlienDeath(): void {
         this.kills++;
-        this.killsText.update(`0x${this.kills.toString(16)}`);
+        this.killsText.update(`${this.kills}`);
     }
 
     private onPlayerDodge(): void {
@@ -184,29 +185,26 @@ export class Game extends AnimatedEntity {
 
     private win(): void {
         console.log("Player wins!");
-        this.controller.gameOver();
         this.text.explode("You win!");
-        this.stop();
-        this.showEndState(true);
-        this.emit("end", {
-            name: this.options.playerName,
-            won: true,
-            kills: this.kills,
-            time: (Date.now() - this.startTime) / 1000,
-        });
+        this.endGame(true);
     }
 
     private lose(): void {
         console.log("Player loses :(");
         this.text.explode("You lose!");
+        this.endGame(false);
+    }
+
+    private endGame(won: boolean): void {
         this.controller.gameOver();
         this.stop();
-        this.showEndState(false);
+        this.showEndState(won);
         this.emit("end", {
             nickname: this.options.playerName,
-            won: false,
+            won: won,
             kills: this.kills,
             time: (Date.now() - this.startTime) / 1000,
+            settings: this.originalSettings,
         });
     }
 
@@ -247,11 +245,11 @@ export class Game extends AnimatedEntity {
         }, start + pause);
 
         setTimeout(() => {
-            this.text.addText(`KILLS: 0x${this.kills.toString(16)}`, 240, 540 + textSize / 2 + textSpacing, TextAlign.CENTER, 0xff6633, textSize);
+            this.text.addText(`KILLS: ${this.kills}`, 240, 540 + textSize / 2 + textSpacing, TextAlign.CENTER, 0xff6633, textSize);
         }, start + pause * 2);
 
         setTimeout(() => {
-            const t = this.text.addCenteredText(this.options.playerName, 240, 540, 30, 0xffffff);
+            const t = this.text.addCenteredText(this.options.playerName, 240, 240, 30, 0xffffff);
             t.rotation = -30 * Math.PI / 180;
 
             const minAngle = 0.3;
