@@ -9,3 +9,4 @@ export class Player {
     public settings_FIREPOWER: number; // 0-10
     public settings_SHIELDS: number; //0-4
 }
+

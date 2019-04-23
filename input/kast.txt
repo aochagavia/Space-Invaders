@@ -1,0 +1,52 @@
+Naast de naam van de toets geef ik ook de code weer tussen haakjes
+
+# Player 1 (left)
+
+Stick:
+* Up: arrow up (38)
+* Left: arrow left (37)
+* Right: arrow right (39)
+* Down: arrow down (40)
+
+First row (left to right):
+* p (80)
+* enter (13)
+
+Second row:
+* shift (16)
+* z (90)
+* x (88)
+
+Third row:
+* ctrl (17)
+* alt (18)
+* space (32)
+
+Fourth row:
+* 5 (53)
+* Button not working
+
+# Player 2 (right)
+
+Stick:
+* Up: r (82)
+* Left: d (68)
+* Right: g (71)
+* Down: f (70)
+
+First row (left to right):
+* 1 (49)
+* 2 (50)
+
+Second row:
+* i (73)
+* k (75)
+* j (74)
+
+Third row:
+* s (83)
+* q (81)
+* w (87)
+
+Fourth row:
+* a (65)
