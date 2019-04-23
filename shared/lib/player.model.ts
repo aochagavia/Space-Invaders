@@ -12,9 +12,9 @@ export class Player {
 export class PlayerSettings {
     constructor(
         public shipShields: number,
-        public defenseThickness: number,
-        public defenseWidth: number,
         public firePower: number,
         public dodgeChance: number,
+        public defenseThickness: number,
+        public defenseWidth: number,
     ) {}
 }
