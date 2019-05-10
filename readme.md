@@ -31,11 +31,10 @@ Visit `localhost:4200/dashboard` to see the dashboard and `localhost:4200/game` 
 
 ## Running the input program
 
-Note: the input program is not in this repository, but can be found [here](https://github.com/peerhenry/execut_retro_input)
-
 ```
+cd input
 cargo run --release
 ```
 
-Notice the `--release` flag, which is absolutely necessary if you expect the application to perform properly. Without it,
+Notice the `--release` flag, which is absolutely necessary if you expect the application to perform well. Without it,
 the background soundtrack will not work properly.
